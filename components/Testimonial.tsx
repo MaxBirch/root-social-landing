@@ -80,10 +80,10 @@ export default function Testimonial() {
             className="font-black leading-tight"
             style={{ fontSize: "clamp(1.7rem, 4vw, 2.5rem)", color: "#1A1A1A" }}
           >
-            Don&apos;t take our word for it
+            What our clients actually say
           </h2>
           <p style={{ color: "rgba(26,26,26,0.5)", fontSize: "0.95rem", marginTop: "8px" }}>
-            Real clients. Real results. No fabricated case studies.
+            Real clients. Verified results. Not a single word fabricated.
           </p>
         </div>
 

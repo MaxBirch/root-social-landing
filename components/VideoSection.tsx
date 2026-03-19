@@ -78,10 +78,10 @@ export default function VideoSection() {
             className="font-black text-white leading-tight tracking-tight"
             style={{ fontSize: "clamp(1.7rem, 4vw, 2.8rem)" }}
           >
-            What we&apos;ve done for brands like yours
+            Results we&apos;ve driven for brands like yours
           </h2>
           <p className="mt-3" style={{ color: "rgba(255,255,255,0.65)", fontSize: "1rem" }}>
-            Not projections. Not case study templates. Real numbers from real clients.
+            No projections. No templates. Real numbers from real accounts we manage.
           </p>
         </div>
 
@@ -177,10 +177,10 @@ export default function VideoSection() {
                 </svg>
               </div>
               <p className="font-bold" style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.9rem" }}>
-                Max introduces Root Social — coming soon
+                See exactly what&apos;s in your free audit
               </p>
               <p className="mt-1" style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.78rem" }}>
-                What you&apos;ll get in your free audit · 90 seconds
+                A 90-second walkthrough from Max, founder of Root Social
               </p>
             </div>
           </div>

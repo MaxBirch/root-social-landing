@@ -137,10 +137,10 @@ export default function ExitIntent() {
                 Wait — before you go
               </span>
               <h3 className="text-white font-black text-2xl leading-tight mb-3">
-                We&apos;ll tell you exactly where your ads are losing money
+                Before you go — we&apos;ll show you exactly where your budget is leaking
               </h3>
               <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.5)" }}>
-                Drop your email and we&apos;ll send you a free personalised breakdown — no call required, no pitch.
+                Drop your email and get a free personalised breakdown — no call, no pitch, no strings.
               </p>
             </div>
 
@@ -172,7 +172,7 @@ export default function ExitIntent() {
                 type="submit"
                 className="btn-green w-full rounded-xl font-bold text-base py-3.5 min-h-[52px]"
               >
-                Send Me the Breakdown →
+                Show Me Where I&apos;m Losing Money →
               </button>
             </form>
 

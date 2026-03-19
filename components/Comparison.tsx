@@ -4,28 +4,28 @@ import { useEffect, useRef } from "react";
 
 const rows = [
   {
-    rootSocial: "Dedicated media buyer — capped clients, you get real attention",
-    others: "Overworked buyers juggling 20+ clients",
+    rootSocial: "Dedicated media buyer with a capped client roster — your account gets real focus",
+    others: "Overworked buyers juggling 20+ accounts at once",
   },
   {
-    rootSocial: "Unlimited ad creatives — no cap, no extra fees",
-    others: "Fixed creative quota, extra costs beyond it",
+    rootSocial: "Unlimited ad creatives included — no caps, no surprise invoices",
+    others: "Creative quota hit? Pay more or go without",
   },
   {
-    rootSocial: "Rolling monthly contracts — stay because results speak",
-    others: "Locked into 6–12 month contracts",
+    rootSocial: "Rolling monthly contracts — we earn your business every single month",
+    others: "Locked in for 6–12 months regardless of results",
   },
   {
-    rootSocial: "Live AI-powered dashboard — full transparency, always",
-    others: "Vague PDF reports, hidden performance data",
+    rootSocial: "Live AI dashboard — see your results in real time, 24/7",
+    others: "Monthly PDF reports with cherry-picked metrics",
   },
   {
-    rootSocial: "£20M+ in revenue generated for clients",
-    others: "No proven track record to show",
+    rootSocial: "£20M+ in tracked revenue generated across client accounts",
+    others: "No verifiable track record — take their word for it",
   },
   {
-    rootSocial: "Same-day response and proactive optimisations",
-    others: "Slow to respond when performance drops",
+    rootSocial: "Same-day response, proactive optimisations — you never chase us",
+    others: "Slow to respond when performance dips",
   },
 ];
 
@@ -75,10 +75,10 @@ export default function Comparison() {
               color: "#1A1A1A",
             }}
           >
-            Root Social vs The Rest
+            Why brands switch to Root Social
           </h2>
           <p className="mt-3" style={{ color: "rgba(26,26,26,0.5)", fontSize: "1rem" }}>
-            We built every policy around one question: <em>&ldquo;Would I want this if I were the client?&rdquo;</em>
+            Every policy we have was built around one question: <em>&ldquo;Would I want this if I were the client?&rdquo;</em>
           </p>
         </div>
 
@@ -178,7 +178,7 @@ export default function Comparison() {
         {/* Bottom CTA nudge */}
         <div className="text-center mt-10">
           <p style={{ color: "rgba(26,26,26,0.5)", fontSize: "0.9rem", marginBottom: "16px" }}>
-            See the difference for yourself — your audit is completely free
+            Experience the difference first-hand — your audit is 100% free
           </p>
           <button
             onClick={() => {
@@ -187,7 +187,7 @@ export default function Comparison() {
             }}
             className="btn-green inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-sm font-bold"
           >
-            Get My Free Audit →
+            Claim My Free Audit →
           </button>
         </div>
       </div>

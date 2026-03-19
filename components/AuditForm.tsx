@@ -202,10 +202,10 @@ export default function AuditForm() {
                 className="font-black leading-tight text-white mb-3"
                 style={{ fontSize: "clamp(1.7rem, 4vw, 2.5rem)" }}
               >
-                Find out where your ad budget is leaking
+                Claim your free ad account audit
               </h2>
               <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.95rem" }}>
-                Takes 2 minutes. We review your account <strong className="text-white/80">before</strong> we speak.
+                Takes 2 minutes. We review your account <strong className="text-white/80">before</strong> we ever speak.
               </p>
 
               {/* Scarcity nudge */}
@@ -218,7 +218,7 @@ export default function AuditForm() {
               >
                 <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
                 <span style={{ color: "rgba(239,68,68,0.8)", fontSize: "0.78rem", fontWeight: 700 }}>
-                  Only 3 audit spots remaining this month
+                  3 of 5 audit spots claimed this month
                 </span>
               </div>
             </div>
@@ -239,7 +239,7 @@ export default function AuditForm() {
                 ))}
               </div>
               <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.55)" }}>
-                Step {step} of 3 — {step === 1 ? "Your details" : step === 2 ? "Your business" : "Your challenge"}
+                Step {step} of 3 — {step === 1 ? "About you" : step === 2 ? "Your ad account" : "Your biggest challenge"}
               </p>
             </div>
 
@@ -259,7 +259,7 @@ export default function AuditForm() {
                 <div className="space-y-5">
                   <div>
                     <label className="block font-semibold text-sm mb-2.5" style={{ color: "rgba(255,255,255,0.8)" }}>
-                      What&apos;s your first name?
+                      First name
                     </label>
                     <input
                       type="text"
@@ -322,7 +322,7 @@ export default function AuditForm() {
                     onClick={handleNext}
                     className="btn-green w-full rounded-xl py-4 text-base mt-1 min-h-[56px]"
                   >
-                    Continue →
+                    Continue — Step 2 of 3 →
                   </button>
 
                   <p className="text-center" style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.72rem" }}>
@@ -408,7 +408,7 @@ export default function AuditForm() {
                   </div>
 
                   <button onClick={handleNext} className="btn-green w-full rounded-xl py-4 text-base min-h-[56px]">
-                    Continue →
+                    Continue — Step 3 of 3 →
                   </button>
                 </div>
               )}
@@ -418,7 +418,7 @@ export default function AuditForm() {
                 <div className="space-y-6">
                   <div>
                     <label className="block font-semibold text-sm mb-3" style={{ color: "rgba(255,255,255,0.8)" }}>
-                      What&apos;s your biggest paid social challenge right now?
+                      What&apos;s your #1 paid social challenge right now?
                     </label>
                     <div className="space-y-2">
                       {CHALLENGE_OPTIONS.map((opt) => {
@@ -498,10 +498,10 @@ export default function AuditForm() {
                         <svg className="animate-spin" width="18" height="18" viewBox="0 0 24 24" fill="none">
                           <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="60" strokeDashoffset="15" strokeLinecap="round"/>
                         </svg>
-                        Submitting...
+                        Booking your audit...
                       </span>
                     ) : (
-                      "Get My Free Audit →"
+                      "Claim My Free Audit →"
                     )}
                   </button>
 

@@ -90,7 +90,7 @@ export default function Hero() {
             }}
           >
             <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
-            Free Audit — Limited Spots This Month
+            Free Audit — Only 3 Spots Left This Month
           </span>
         </div>
 
@@ -104,7 +104,7 @@ export default function Hero() {
         >
           Your ads are leaking money.
           <br />
-          <span style={{ color: "#2D8B3C" }}>We&apos;ll prove it. Free.</span>
+          <span style={{ color: "#2D8B3C" }}>We&apos;ll find the holes. Free.</span>
         </h1>
 
         {/* Subheadline */}
@@ -117,7 +117,7 @@ export default function Hero() {
             opacity: 0,
           }}
         >
-          We audit your full ad account and show you exactly what&apos;s wasting your budget — before you spend another pound.
+          We dig into your full ad account and show you exactly what&apos;s draining your budget — no cost, no commitment, no pitch.
         </p>
 
         {/* Social proof micro-row */}
@@ -149,7 +149,7 @@ export default function Hero() {
             className="btn-green inline-flex items-center gap-3 rounded-full min-h-[64px] px-12 py-4"
             style={{ fontSize: "1.1rem", fontWeight: 800 }}
           >
-            Find My Biggest Ad Waste — Free
+            Reveal My Ad Leaks — Free
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
@@ -163,11 +163,11 @@ export default function Hero() {
                 style={{ background: "#ef4444" }}
               />
               <span style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.8rem", fontWeight: 600 }}>
-                Only 3 audit spots open this month
+                Only 3 free audit spots left this month
               </span>
             </div>
             <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.78rem" }}>
-              No commitment · No contracts · Takes 2 minutes
+              2 minutes · No commitment · No sales call
             </p>
           </div>
         </div>
