@@ -104,7 +104,7 @@ export async function POST(request: NextRequest) {
       console.error("Webhook error:", webhookError);
     }
 
-    // Send Slack notification via proactive API
+    // Send notification via proactive API
     try {
       await fetch("https://root-social-os.vercel.app/api/proactive", {
         method: "POST",
@@ -113,16 +113,13 @@ export async function POST(request: NextRequest) {
           "x-mc-secret": "mc-proactive-2026"
         },
         body: JSON.stringify({
-          type: "exit_intent_lead",
-          data: {
-            email,
-            timestamp: leadData.timestamp,
-          },
+          message: `📩 Exit-intent email captured!\n📧 ${email}\nLower intent but worth a follow-up video audit.`,
+          agentId: "main",
+          priority: "normal",
         }),
       });
-    } catch (slackError) {
-      console.error("Slack notification error:", slackError);
-      // Don't fail the request if Slack notification fails
+    } catch (notifyError) {
+      console.error("Notification error:", notifyError);
     }
 
     return NextResponse.json({ success: true, eventId });

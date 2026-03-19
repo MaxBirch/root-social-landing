@@ -129,8 +129,10 @@ export async function POST(request: NextRequest) {
       // Don't fail the request if webhook is unavailable
     }
 
-    // Send Slack notification via proactive API
+    // Send notification via proactive API
     try {
+      const qualTag = qualified ? "✅ QUALIFIED" : "⚠️ Disqualified";
+      const msg = `🚨 NEW LEAD from landing page!\n${qualTag}\n👤 ${firstName}\n📧 ${email}\n🌐 ${website || 'N/A'}\n💰 Ad spend: ${adSpend || 'N/A'}\n🎯 Challenge: ${challenge || 'N/A'}`;
       await fetch("https://root-social-os.vercel.app/api/proactive", {
         method: "POST",
         headers: { 
@@ -138,22 +140,14 @@ export async function POST(request: NextRequest) {
           "x-mc-secret": "mc-proactive-2026"
         },
         body: JSON.stringify({
-          type: "landing_lead",
-          data: {
-            firstName,
-            email,
-            website,
-            adSpend,
-            challenge,
-            qualified,
-            source,
-            timestamp: leadData.timestamp,
-          },
+          message: msg,
+          agentId: "main",
+          priority: "high",
         }),
       });
-    } catch (slackError) {
-      console.error("Slack notification error:", slackError);
-      // Don't fail the request if Slack notification fails
+    } catch (notifyError) {
+      console.error("Notification error:", notifyError);
+      // Don't fail the request if notification fails
     }
 
     return NextResponse.json({ success: true, key, eventId });
