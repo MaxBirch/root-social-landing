@@ -35,16 +35,21 @@ export default function Comparison() {
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
+    // Immediately reveal if already in viewport
+    const inner = el.querySelector(".comparison-inner");
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          el.querySelector(".comparison-inner")?.classList.add("revealed");
+          inner?.classList.add("revealed");
           observer.disconnect();
         }
       },
-      { threshold: 0.08 }
+      { threshold: 0, rootMargin: "100px" }
     );
     observer.observe(el);
+    // Fallback: reveal after short delay in case observer misses
+    const fallback = setTimeout(() => inner?.classList.add("revealed"), 1200);
+    return () => { observer.disconnect(); clearTimeout(fallback); };
     return () => observer.disconnect();
   }, []);
 

@@ -39,17 +39,20 @@ export default function Testimonial() {
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
+    const wrap = el.querySelector(".testimonial-wrap");
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          el.querySelector(".testimonial-wrap")?.classList.add("revealed");
+          wrap?.classList.add("revealed");
           observer.disconnect();
         }
       },
-      { threshold: 0.12 }
+      { threshold: 0, rootMargin: "100px" }
     );
     observer.observe(el);
-    return () => observer.disconnect();
+    // Fallback: reveal after short delay in case observer misses
+    const fallback = setTimeout(() => wrap?.classList.add("revealed"), 1200);
+    return () => { observer.disconnect(); clearTimeout(fallback); };
   }, []);
 
   const t = testimonials[active];
