@@ -15,16 +15,16 @@ interface FormData {
 
 const AD_SPEND_OPTIONS = [
   { value: "less-than-1k", label: "Less than £1,000/month" },
-  { value: "1k-3k", label: "£1,000 to £3,000/month" },
-  { value: "3k-10k", label: "£3,000 to £10,000/month" },
+  { value: "1k-3k", label: "£1,000 – £3,000/month" },
+  { value: "3k-10k", label: "£3,000 – £10,000/month" },
   { value: "10k-plus", label: "£10,000+/month" },
   { value: "not-running", label: "Not currently running ads" },
 ];
 
 const CHALLENGE_OPTIONS = [
-  { value: "not-enough-creative", label: "Not enough creative being produced" },
   { value: "roas", label: "ROAS isn't where it needs to be" },
   { value: "scaling", label: "Scaling spend without killing performance" },
+  { value: "not-enough-creative", label: "Not enough creative being produced" },
   { value: "poor-comms", label: "Poor communication from current agency" },
   { value: "getting-started", label: "Just getting started with paid social" },
   { value: "other", label: "Other" },
@@ -131,7 +131,7 @@ export default function AuditForm() {
       ref={sectionRef}
       className="py-16 md:py-24 px-4 scroll-mt-0"
       style={{
-        background: "linear-gradient(180deg, #0A0A0A 0%, #111111 100%)",
+        background: "linear-gradient(180deg, #0A0A0A 0%, #0D0D0D 100%)",
       }}
     >
       <div className="max-w-lg mx-auto">
@@ -156,8 +156,22 @@ export default function AuditForm() {
                 Find out where your ad budget is leaking
               </h2>
               <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.95rem" }}>
-                Takes 2 minutes. We review your account before we speak.
+                Takes 2 minutes. We review your account <strong className="text-white/60">before</strong> we speak.
               </p>
+
+              {/* Scarcity nudge */}
+              <div
+                className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-full"
+                style={{
+                  background: "rgba(239,68,68,0.08)",
+                  border: "1px solid rgba(239,68,68,0.2)",
+                }}
+              >
+                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                <span style={{ color: "rgba(239,68,68,0.8)", fontSize: "0.78rem", fontWeight: 700 }}>
+                  Only 3 audit spots remaining this month
+                </span>
+              </div>
             </div>
 
             {/* Progress bar */}
@@ -175,11 +189,8 @@ export default function AuditForm() {
                   />
                 ))}
               </div>
-              <p
-                className="text-center text-xs"
-                style={{ color: "rgba(255,255,255,0.3)" }}
-              >
-                Step {step} of 3
+              <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>
+                Step {step} of 3 — {step === 1 ? "Your details" : step === 2 ? "Your business" : "Your challenge"}
               </p>
             </div>
 
@@ -189,7 +200,7 @@ export default function AuditForm() {
               className="step-enter mt-8"
               style={{
                 background: "#161616",
-                border: "1px solid rgba(255,255,255,0.07)",
+                border: "1px solid rgba(255,255,255,0.08)",
                 borderRadius: "20px",
                 padding: "clamp(1.5rem, 4vw, 2.25rem)",
               }}
@@ -205,7 +216,9 @@ export default function AuditForm() {
                       type="text"
                       value={formData.firstName}
                       onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                      onKeyDown={(e) => e.key === "Enter" && handleNext()}
                       placeholder="e.g. Alex"
+                      autoComplete="given-name"
                       className="form-input w-full rounded-xl px-4 py-4 text-white placeholder-white/20"
                       style={{
                         background: "rgba(255,255,255,0.04)",
@@ -222,20 +235,20 @@ export default function AuditForm() {
                         e.currentTarget.style.boxShadow = "none";
                       }}
                     />
-                    {errors.firstName && (
-                      <p className="text-red-400 text-xs mt-1.5">{errors.firstName}</p>
-                    )}
+                    {errors.firstName && <p className="text-red-400 text-xs mt-1.5">{errors.firstName}</p>}
                   </div>
 
                   <div>
                     <label className="block font-semibold text-sm mb-2.5" style={{ color: "rgba(255,255,255,0.8)" }}>
-                      What&apos;s your email address?
+                      Work email address
                     </label>
                     <input
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onKeyDown={(e) => e.key === "Enter" && handleNext()}
                       placeholder="you@yourbrand.com"
+                      autoComplete="email"
                       className="form-input w-full rounded-xl px-4 py-4 text-white placeholder-white/20"
                       style={{
                         background: "rgba(255,255,255,0.04)",
@@ -252,18 +265,19 @@ export default function AuditForm() {
                         e.currentTarget.style.boxShadow = "none";
                       }}
                     />
-                    {errors.email && (
-                      <p className="text-red-400 text-xs mt-1.5">{errors.email}</p>
-                    )}
+                    {errors.email && <p className="text-red-400 text-xs mt-1.5">{errors.email}</p>}
                   </div>
 
                   <button
                     onClick={handleNext}
                     className="btn-green w-full rounded-xl py-4 text-base mt-1 min-h-[56px]"
-                    style={{ fontSize: "1rem" }}
                   >
-                    Next Step →
+                    Continue →
                   </button>
+
+                  <p className="text-center" style={{ color: "rgba(255,255,255,0.2)", fontSize: "0.72rem" }}>
+                    No spam. No cold calls. Just your free audit.
+                  </p>
                 </div>
               )}
 
@@ -272,13 +286,14 @@ export default function AuditForm() {
                 <div className="space-y-6">
                   <div>
                     <label className="block font-semibold text-sm mb-2.5" style={{ color: "rgba(255,255,255,0.8)" }}>
-                      What&apos;s your brand&apos;s website URL?
+                      Your brand&apos;s website URL
                     </label>
                     <input
                       type="url"
                       value={formData.website}
                       onChange={(e) => setFormData({ ...formData, website: e.target.value })}
                       placeholder="https://yourbrand.com"
+                      autoComplete="url"
                       className="form-input w-full rounded-xl px-4 py-4 text-white placeholder-white/20"
                       style={{
                         background: "rgba(255,255,255,0.04)",
@@ -295,14 +310,12 @@ export default function AuditForm() {
                         e.currentTarget.style.boxShadow = "none";
                       }}
                     />
-                    {errors.website && (
-                      <p className="text-red-400 text-xs mt-1.5">{errors.website}</p>
-                    )}
+                    {errors.website && <p className="text-red-400 text-xs mt-1.5">{errors.website}</p>}
                   </div>
 
                   <div>
                     <label className="block font-semibold text-sm mb-3" style={{ color: "rgba(255,255,255,0.8)" }}>
-                      What&apos;s your current monthly ad spend?
+                      Current monthly ad spend
                     </label>
                     <div className="space-y-2">
                       {AD_SPEND_OPTIONS.map((opt) => {
@@ -324,9 +337,7 @@ export default function AuditForm() {
                                 background: isSelected ? "#2D8B3C" : "transparent",
                               }}
                             >
-                              {isSelected && (
-                                <div className="w-2 h-2 rounded-full bg-white" />
-                              )}
+                              {isSelected && <div className="w-2 h-2 rounded-full bg-white" />}
                             </div>
                             <span className="text-sm font-medium" style={{ color: isSelected ? "white" : "rgba(255,255,255,0.7)" }}>
                               {opt.label}
@@ -343,16 +354,11 @@ export default function AuditForm() {
                         );
                       })}
                     </div>
-                    {errors.adSpend && (
-                      <p className="text-red-400 text-xs mt-1.5">{errors.adSpend}</p>
-                    )}
+                    {errors.adSpend && <p className="text-red-400 text-xs mt-1.5">{errors.adSpend}</p>}
                   </div>
 
-                  <button
-                    onClick={handleNext}
-                    className="btn-green w-full rounded-xl py-4 text-base min-h-[56px]"
-                  >
-                    Next Step →
+                  <button onClick={handleNext} className="btn-green w-full rounded-xl py-4 text-base min-h-[56px]">
+                    Continue →
                   </button>
                 </div>
               )}
@@ -362,7 +368,7 @@ export default function AuditForm() {
                 <div className="space-y-6">
                   <div>
                     <label className="block font-semibold text-sm mb-3" style={{ color: "rgba(255,255,255,0.8)" }}>
-                      What&apos;s the biggest challenge with your paid social right now?
+                      What&apos;s your biggest paid social challenge right now?
                     </label>
                     <div className="space-y-2">
                       {CHALLENGE_OPTIONS.map((opt) => {
@@ -384,9 +390,7 @@ export default function AuditForm() {
                                 background: isSelected ? "#2D8B3C" : "transparent",
                               }}
                             >
-                              {isSelected && (
-                                <div className="w-2 h-2 rounded-full bg-white" />
-                              )}
+                              {isSelected && <div className="w-2 h-2 rounded-full bg-white" />}
                             </div>
                             <span className="text-sm font-medium" style={{ color: isSelected ? "white" : "rgba(255,255,255,0.7)" }}>
                               {opt.label}
@@ -403,12 +407,9 @@ export default function AuditForm() {
                         );
                       })}
                     </div>
-                    {errors.challenge && (
-                      <p className="text-red-400 text-xs mt-1.5">{errors.challenge}</p>
-                    )}
+                    {errors.challenge && <p className="text-red-400 text-xs mt-1.5">{errors.challenge}</p>}
                   </div>
 
-                  {/* Other free text */}
                   {formData.challenge === "other" && (
                     <div>
                       <textarea
@@ -439,7 +440,7 @@ export default function AuditForm() {
                   <button
                     onClick={handleSubmit}
                     disabled={submitting}
-                    className="btn-green w-full rounded-xl text-base min-h-[60px] disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+                    className="btn-green w-full rounded-xl text-base min-h-[60px] disabled:opacity-60 disabled:cursor-not-allowed"
                     style={{ fontSize: "1.05rem", padding: "16px 24px" }}
                   >
                     {submitting ? (
@@ -454,21 +455,36 @@ export default function AuditForm() {
                     )}
                   </button>
 
-                  <p className="text-center" style={{ color: "rgba(255,255,255,0.2)", fontSize: "0.75rem" }}>
-                    By submitting, you agree to be contacted by Root Social about your audit.
-                  </p>
+                  {/* Trust row */}
+                  <div className="flex items-center justify-center gap-4 pt-1">
+                    <div className="flex items-center gap-1.5">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2D8B3C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                      </svg>
+                      <span style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.72rem" }}>100% free</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2D8B3C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 8v4M12 16h.01"/>
+                      </svg>
+                      <span style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.72rem" }}>No commitment</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2D8B3C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                      </svg>
+                      <span style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.72rem" }}>2 min to complete</span>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
           </>
         ) : qualified ? (
-          /* Qualified — show Calendly */
-          <CalendlyEmbed
-            firstName={formData.firstName}
-            email={formData.email}
-          />
+          <CalendlyEmbed firstName={formData.firstName} email={formData.email} />
         ) : (
-          /* Disqualified — polite message */
           <div className="text-center py-10">
             <div
               className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6"
@@ -480,19 +496,17 @@ export default function AuditForm() {
               </svg>
             </div>
             <h3 className="text-white font-black text-2xl md:text-3xl mb-4">
-              Thanks for your interest, {formData.firstName}!
+              Thanks, {formData.firstName}!
             </h3>
             <p className="leading-relaxed max-w-sm mx-auto" style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.95rem" }}>
-              At this stage, our services are best suited for brands spending £1,000+ per month on ads.
+              Our audits are best suited for brands currently spending £1,000+/month on ads. We want to make sure we can deliver real value.
             </p>
             <p className="leading-relaxed max-w-sm mx-auto mt-3" style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.95rem" }}>
-              Follow us on Instagram for tips on getting started:
+              Follow us for free paid social tips while you scale:
             </p>
-            <p className="font-bold text-lg mt-4" style={{ color: "#2D8B3C" }}>
-              @rootsocialmedia
-            </p>
+            <p className="font-bold text-lg mt-4" style={{ color: "#2D8B3C" }}>@root_social</p>
             <p className="mt-6" style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.8rem" }}>
-              We hope to work with you when you&apos;re ready to scale. 🚀
+              We&apos;d love to work with you when you&apos;re ready to scale. 🚀
             </p>
           </div>
         )}

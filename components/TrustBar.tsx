@@ -3,9 +3,46 @@
 import { useEffect, useRef } from "react";
 
 const stats = [
-  { icon: "💰", text: "£20M+ Spent On Ads" },
-  { icon: "📈", text: "4x ROI in 8 Weeks" },
-  { icon: "🤝", text: "No Contracts, Ever" },
+  {
+    value: "£20M+",
+    label: "Ad Revenue Generated",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+        <polyline points="17 6 23 6 23 12"/>
+      </svg>
+    ),
+  },
+  {
+    value: "50+",
+    label: "Brands Scaled",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+      </svg>
+    ),
+  },
+  {
+    value: "5.0★",
+    label: "Google Rating",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+      </svg>
+    ),
+  },
+  {
+    value: "35x",
+    label: "Best ROAS Achieved",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 8v4l3 3"/>
+      </svg>
+    ),
+  },
 ];
 
 export default function TrustBar() {
@@ -17,11 +54,11 @@ export default function TrustBar() {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          el.querySelectorAll(".trust-pill").forEach((pill, i) => {
+          el.querySelectorAll(".trust-stat").forEach((pill, i) => {
             setTimeout(() => {
               (pill as HTMLElement).style.opacity = "1";
               (pill as HTMLElement).style.transform = "translateY(0)";
-            }, i * 100);
+            }, i * 80);
           });
           observer.disconnect();
         }
@@ -35,39 +72,34 @@ export default function TrustBar() {
   return (
     <section
       ref={ref}
-      className="py-10 md:py-12 px-4"
+      className="py-8 px-4"
       style={{
-        background: "linear-gradient(180deg, #0F0F0F 0%, #141414 100%)",
+        background: "#0A0A0A",
+        borderTop: "1px solid rgba(45,139,60,0.15)",
         borderBottom: "1px solid rgba(255,255,255,0.05)",
       }}
     >
-      <div className="max-w-3xl mx-auto">
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-center">
+      <div className="max-w-4xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {stats.map((stat) => (
             <div
-              key={stat.text}
-              className="trust-pill"
+              key={stat.label}
+              className="trust-stat flex flex-col items-center gap-1.5 px-4 py-4 rounded-2xl"
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                background: "#0A0A0A",
-                border: "1px solid rgba(255,255,255,0.1)",
-                color: "white",
-                fontWeight: 700,
-                fontSize: "0.875rem",
-                padding: "10px 20px",
-                borderRadius: "9999px",
-                whiteSpace: "nowrap",
-                boxShadow: "0 4px 16px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.05) inset",
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.07)",
                 opacity: 0,
                 transform: "translateY(8px)",
                 transition: "opacity 0.5s ease, transform 0.5s ease",
-                cursor: "default",
               }}
             >
-              <span style={{ fontSize: "1rem" }}>{stat.icon}</span>
-              <span style={{ color: "rgba(255,255,255,0.9)" }}>{stat.text}</span>
+              <div style={{ color: "#2D8B3C" }}>{stat.icon}</div>
+              <div className="font-black text-white" style={{ fontSize: "1.4rem", lineHeight: 1.1 }}>
+                {stat.value}
+              </div>
+              <div style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.72rem", fontWeight: 600, textAlign: "center", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                {stat.label}
+              </div>
             </div>
           ))}
         </div>

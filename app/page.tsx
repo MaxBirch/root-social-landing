@@ -1,37 +1,37 @@
 import Hero from "@/components/Hero";
-import VideoSection from "@/components/VideoSection";
 import TrustBar from "@/components/TrustBar";
+import VideoSection from "@/components/VideoSection";
 import Comparison from "@/components/Comparison";
-import AuditForm from "@/components/AuditForm";
 import Testimonial from "@/components/Testimonial";
+import AuditForm from "@/components/AuditForm";
 import Footer from "@/components/Footer";
 import ExitIntent from "@/components/ExitIntent";
 
 export default function Home() {
   return (
     <main>
-      {/* 1. Hero — Impact + CTA above fold */}
+      {/* 1. Hero — impact + single CTA above fold */}
       <Hero />
 
-      {/* 2. Trust Bar — immediate social proof after hero */}
+      {/* 2. Trust Bar — instant credibility, numbers-first */}
       <TrustBar />
 
-      {/* 3. Video — humanise the brand */}
+      {/* 3. Results / Case Studies — "show don't tell" before explanation */}
       <VideoSection />
 
-      {/* 4. Comparison — why Root Social */}
+      {/* 4. Comparison — why Root Social vs others */}
       <Comparison />
 
-      {/* 5. Testimonial — social proof BEFORE form */}
+      {/* 5. Social Proof — testimonials before the ask */}
       <Testimonial />
 
-      {/* 6. Form — primary conversion */}
+      {/* 6. Form — primary conversion point */}
       <AuditForm />
 
-      {/* Footer */}
+      {/* 7. Footer */}
       <Footer />
 
-      {/* Exit Intent — desktop only, client-only */}
+      {/* Exit Intent — desktop only, once per session */}
       <ExitIntent />
     </main>
   );

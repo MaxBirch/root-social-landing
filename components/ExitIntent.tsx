@@ -9,26 +9,31 @@ export default function ExitIntent() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // Only on desktop (pointer available)
     if (typeof window === "undefined") return;
-    if (window.matchMedia("(pointer: coarse)").matches) return; // skip touch devices
+    // Desktop only (pointer: fine = mouse)
+    if (!window.matchMedia("(pointer: fine)").matches) return;
 
-    // Only show once per session
     const shown = sessionStorage.getItem("exit-intent-shown");
     if (shown) return;
 
     let triggered = false;
-
     const handleMouseLeave = (e: MouseEvent) => {
       if (e.clientY <= 20 && !triggered) {
         triggered = true;
         sessionStorage.setItem("exit-intent-shown", "true");
-        setTimeout(() => setVisible(true), 100);
+        setTimeout(() => setVisible(true), 120);
       }
     };
 
-    document.addEventListener("mouseleave", handleMouseLeave);
-    return () => document.removeEventListener("mouseleave", handleMouseLeave);
+    // Wait 5s before activating so it doesn't fire on page load navigation
+    const timer = setTimeout(() => {
+      document.addEventListener("mouseleave", handleMouseLeave);
+    }, 5000);
+
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+    };
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -58,17 +63,42 @@ export default function ExitIntent() {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm"
+      style={{ animation: "fadeIn 0.2s ease-out forwards" }}
       onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}
     >
-      <div className="bg-root-dark rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl relative border border-white/10">
-        {/* Close */}
+      <div
+        className="relative max-w-md w-full mx-4 rounded-2xl p-8 shadow-2xl"
+        style={{
+          background: "#161616",
+          border: "1px solid rgba(45,139,60,0.25)",
+          boxShadow: "0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(45,139,60,0.1)",
+          animation: "stepFadeIn 0.3s ease-out forwards",
+        }}
+      >
+        {/* Green top accent */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: "10%",
+            right: "10%",
+            height: "2px",
+            background: "linear-gradient(90deg, transparent, #2D8B3C, transparent)",
+            borderRadius: "9999px",
+          }}
+        />
+
+        {/* Close button */}
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 text-white/40 hover:text-white transition-colors"
+          className="absolute top-4 right-4 transition-colors"
+          style={{ color: "rgba(255,255,255,0.3)" }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.3)")}
           aria-label="Close"
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
             <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
           </svg>
         </button>
@@ -76,12 +106,21 @@ export default function ExitIntent() {
         {!submitted ? (
           <>
             <div className="mb-6">
-              <p className="text-root-green font-semibold text-sm mb-2">Before you go...</p>
-              <h3 className="text-white font-black text-2xl md:text-3xl leading-tight mb-3">
-                Want us to review your ad account for free?
+              <span
+                className="inline-block text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full mb-4"
+                style={{
+                  background: "rgba(45,139,60,0.15)",
+                  color: "#4EB85E",
+                  border: "1px solid rgba(45,139,60,0.25)",
+                }}
+              >
+                Wait — before you go
+              </span>
+              <h3 className="text-white font-black text-2xl leading-tight mb-3">
+                We&apos;ll tell you exactly where your ads are losing money
               </h3>
-              <p className="text-white/60 text-sm leading-relaxed">
-                Drop your email and we&apos;ll send you a personalised 5-minute video audit — no call needed.
+              <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.5)" }}>
+                Drop your email and we&apos;ll send you a free personalised breakdown — no call required, no pitch.
               </p>
             </div>
 
@@ -90,32 +129,50 @@ export default function ExitIntent() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@yourbrand.com"
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-white/30 focus:outline-none focus:border-root-green transition-colors"
+                placeholder="your@email.com"
+                className="form-input w-full rounded-xl px-4 py-3.5 text-white placeholder-white/25"
+                style={{
+                  background: "rgba(255,255,255,0.05)",
+                  border: "1.5px solid rgba(255,255,255,0.1)",
+                  fontSize: "16px",
+                  outline: "none",
+                  transition: "border-color 0.2s ease",
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = "#2D8B3C";
+                  e.currentTarget.style.boxShadow = "0 0 0 3px rgba(45,139,60,0.15)";
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
               />
               {error && <p className="text-red-400 text-sm">{error}</p>}
               <button
                 type="submit"
-                className="w-full bg-root-green text-white font-bold text-base py-3.5 rounded-xl hover:bg-green-700 transition-colors min-h-[52px]"
+                className="btn-green w-full rounded-xl font-bold text-base py-3.5 min-h-[52px]"
               >
-                Send My Audit →
+                Send Me the Breakdown →
               </button>
             </form>
 
-            <p className="text-white/30 text-xs text-center mt-3">
-              No spam, ever. Just actionable insights for your ads.
+            <p className="text-center mt-3" style={{ color: "rgba(255,255,255,0.2)", fontSize: "0.72rem" }}>
+              No spam. One email. Actionable insights only.
             </p>
           </>
         ) : (
           <div className="text-center py-4">
-            <div className="w-14 h-14 rounded-full bg-root-green/20 flex items-center justify-center mx-auto mb-4">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <div
+              className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4"
+              style={{ background: "rgba(45,139,60,0.15)", border: "1px solid rgba(45,139,60,0.25)" }}
+            >
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
                 <path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="#2D8B3C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
             <h3 className="text-white font-black text-xl mb-2">You&apos;re on the list!</h3>
-            <p className="text-white/60 text-sm">
-              We&apos;ll review your account and send your personalised video audit shortly.
+            <p className="text-sm" style={{ color: "rgba(255,255,255,0.5)" }}>
+              We&apos;ll review your account and send your breakdown shortly.
             </p>
           </div>
         )}

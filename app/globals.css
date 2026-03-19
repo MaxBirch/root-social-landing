@@ -6,6 +6,8 @@
   --font-inter: 'Inter', sans-serif;
   --green: #2D8B3C;
   --green-dark: #236B2F;
+  --green-mid: #3aA04a;
+  --green-light: #4EB85E;
   --green-glow: rgba(45, 139, 60, 0.3);
   --dark: #0F0F0F;
   --dark-card: #161616;
@@ -23,7 +25,7 @@ html {
 }
 
 body {
-  background-color: #F5F0E8;
+  background-color: #0A0A0A;
   color: #1A1A1A;
   font-family: var(--font-inter), sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -42,7 +44,7 @@ input, select, textarea {
 }
 
 /* ============================================================
-   SCROLL-TRIGGERED FADE-IN ANIMATIONS
+   ANIMATIONS
    ============================================================ */
 @keyframes fadeInUp {
   from {
@@ -60,62 +62,6 @@ input, select, textarea {
   to { opacity: 1; }
 }
 
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out forwards;
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.5s ease-out forwards;
-}
-
-/* Stagger delays for child elements */
-.stagger-1 { animation-delay: 0.1s; }
-.stagger-2 { animation-delay: 0.2s; }
-.stagger-3 { animation-delay: 0.3s; }
-.stagger-4 { animation-delay: 0.4s; }
-.stagger-5 { animation-delay: 0.5s; }
-
-/* ============================================================
-   INTERSECTION OBSERVER ANIMATION CLASSES
-   ============================================================ */
-.reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
-.reveal.revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ============================================================
-   FORM INPUT FOCUS — GREEN GLOW
-   ============================================================ */
-.form-input {
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.form-input:focus {
-  border-color: #2D8B3C !important;
-  box-shadow: 0 0 0 3px rgba(45, 139, 60, 0.15);
-  outline: none;
-}
-
-/* ============================================================
-   STEP TRANSITION ANIMATION
-   ============================================================ */
 @keyframes stepFadeIn {
   from {
     opacity: 0;
@@ -127,24 +73,76 @@ input, select, textarea {
   }
 }
 
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(45, 139, 60, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(45, 139, 60, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(45, 139, 60, 0); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Stagger delays for hero entrance */
+.stagger-1 { animation-delay: 0.08s; }
+.stagger-2 { animation-delay: 0.18s; }
+.stagger-3 { animation-delay: 0.28s; }
+.stagger-4 { animation-delay: 0.40s; }
+.stagger-5 { animation-delay: 0.52s; }
+
+/* ============================================================
+   INTERSECTION OBSERVER — SCROLL REVEAL
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.65s ease-out, transform 0.65s ease-out;
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   FORM INPUTS
+   ============================================================ */
+.form-input {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  color: white;
+}
+
+.form-input:focus {
+  border-color: #2D8B3C !important;
+  box-shadow: 0 0 0 3px rgba(45, 139, 60, 0.15);
+  outline: none;
+}
+
+/* ============================================================
+   STEP TRANSITION
+   ============================================================ */
 .step-enter {
   animation: stepFadeIn 0.35s ease-out forwards;
 }
 
 /* ============================================================
-   GREEN BUTTON HOVER GLOW
+   GREEN BUTTON
    ============================================================ */
 .btn-green {
   background-color: #2D8B3C;
   color: white;
   font-weight: 700;
   transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
-  box-shadow: 0 4px 15px rgba(45, 139, 60, 0.3);
+  box-shadow: 0 4px 20px rgba(45, 139, 60, 0.35);
 }
 
 .btn-green:hover {
   background-color: #236B2F;
-  box-shadow: 0 6px 25px rgba(45, 139, 60, 0.45);
+  box-shadow: 0 8px 30px rgba(45, 139, 60, 0.5);
   transform: translateY(-1px);
 }
 
@@ -154,30 +152,18 @@ input, select, textarea {
 }
 
 /* ============================================================
-   COMPARISON TABLE ROW HOVER
+   COMPARISON TABLE
    ============================================================ */
 .comparison-row {
-  transition: background-color 0.2s ease;
+  transition: background-color 0.15s ease;
 }
 
 .comparison-row:hover .comparison-cell-left {
-  background-color: #f9f9f9;
+  background-color: #f7f7f7 !important;
 }
 
 /* ============================================================
-   TRUST PILL HOVER
-   ============================================================ */
-.trust-pill {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.trust-pill:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-}
-
-/* ============================================================
-   GLASS CARD EFFECT
+   GLASS CARD
    ============================================================ */
 .glass-card {
   background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%);
@@ -213,4 +199,16 @@ input, select, textarea {
 .section-divider {
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(45, 139, 60, 0.3), transparent);
+}
+
+/* ============================================================
+   TRUST PILL (legacy — kept for compatibility)
+   ============================================================ */
+.trust-pill {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.trust-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }
