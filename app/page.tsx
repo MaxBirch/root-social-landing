@@ -10,28 +10,28 @@ import ExitIntent from "@/components/ExitIntent";
 export default function Home() {
   return (
     <main>
-      {/* Section 1: Hero */}
+      {/* 1. Hero — Impact + CTA above fold */}
       <Hero />
 
-      {/* Section 3: Trust Bar (moved up — above the fold on scroll) */}
+      {/* 2. Trust Bar — immediate social proof after hero */}
       <TrustBar />
 
-      {/* Section 2: Video */}
+      {/* 3. Video — humanise the brand */}
       <VideoSection />
 
-      {/* Section 4: Comparison */}
+      {/* 4. Comparison — why Root Social */}
       <Comparison />
 
-      {/* Section 7: Testimonial */}
+      {/* 5. Testimonial — social proof BEFORE form */}
       <Testimonial />
 
-      {/* Section 5 + 6: Form + Calendly */}
+      {/* 6. Form — primary conversion */}
       <AuditForm />
 
       {/* Footer */}
       <Footer />
 
-      {/* Section 8: Exit Intent (client-only, desktop) */}
+      {/* Exit Intent — desktop only, client-only */}
       <ExitIntent />
     </main>
   );

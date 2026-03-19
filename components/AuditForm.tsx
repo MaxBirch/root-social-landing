@@ -129,201 +129,337 @@ export default function AuditForm() {
     <section
       id="audit-form"
       ref={sectionRef}
-      className="bg-root-dark py-14 md:py-20 px-4 scroll-mt-0"
+      className="py-16 md:py-24 px-4 scroll-mt-0"
+      style={{
+        background: "linear-gradient(180deg, #0A0A0A 0%, #111111 100%)",
+      }}
     >
-      <div className="max-w-xl mx-auto">
+      <div className="max-w-lg mx-auto">
         {!submitted ? (
           <>
             {/* Header */}
-            <div className="text-center mb-8">
-              <span className="inline-block bg-root-green/20 text-root-green font-semibold text-sm px-4 py-1.5 rounded-full mb-4">
+            <div className="text-center mb-10">
+              <span
+                className="inline-block text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-5"
+                style={{
+                  background: "rgba(45,139,60,0.15)",
+                  color: "#4EB85E",
+                  border: "1px solid rgba(45,139,60,0.3)",
+                }}
+              >
                 Free Audit — No Obligation
               </span>
-              <h2 className="text-white font-black text-3xl md:text-4xl leading-tight">
+              <h2
+                className="font-black leading-tight text-white mb-3"
+                style={{ fontSize: "clamp(1.7rem, 4vw, 2.5rem)" }}
+              >
                 Find out where your ad budget is leaking
               </h2>
-              <p className="text-white/50 text-base mt-3">
+              <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.95rem" }}>
                 Takes 2 minutes. We review your account before we speak.
               </p>
             </div>
 
-            {/* Progress */}
-            <div className="flex items-center gap-2 mb-8">
-              {[1, 2, 3].map((s) => (
-                <div key={s} className="flex items-center gap-2 flex-1">
-                  <div className={`flex-1 h-1 rounded-full transition-colors duration-300 ${s <= step ? "bg-root-green" : "bg-white/10"}`} />
-                </div>
-              ))}
+            {/* Progress bar */}
+            <div className="mb-2">
+              <div className="flex gap-1.5 mb-2">
+                {[1, 2, 3].map((s) => (
+                  <div
+                    key={s}
+                    className="flex-1 h-1.5 rounded-full transition-all duration-500"
+                    style={{
+                      background: s <= step
+                        ? "linear-gradient(90deg, #2D8B3C, #4EB85E)"
+                        : "rgba(255,255,255,0.08)",
+                    }}
+                  />
+                ))}
+              </div>
+              <p
+                className="text-center text-xs"
+                style={{ color: "rgba(255,255,255,0.3)" }}
+              >
+                Step {step} of 3
+              </p>
             </div>
-            <p className="text-white/40 text-sm mb-6 text-center">Step {step} of 3</p>
 
-            {/* Step 1 */}
-            {step === 1 && (
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-white font-semibold text-sm mb-2">
-                    What&apos;s your first name?
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.firstName}
-                    onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                    placeholder="e.g. Alex"
-                    className={`w-full bg-white/5 border ${errors.firstName ? "border-red-500" : "border-white/10"} rounded-xl px-4 py-3.5 text-white placeholder-white/30 focus:outline-none focus:border-root-green transition-colors`}
-                  />
-                  {errors.firstName && <p className="text-red-400 text-sm mt-1">{errors.firstName}</p>}
-                </div>
-
-                <div>
-                  <label className="block text-white font-semibold text-sm mb-2">
-                    What&apos;s your email address?
-                  </label>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="you@yourbrand.com"
-                    className={`w-full bg-white/5 border ${errors.email ? "border-red-500" : "border-white/10"} rounded-xl px-4 py-3.5 text-white placeholder-white/30 focus:outline-none focus:border-root-green transition-colors`}
-                  />
-                  {errors.email && <p className="text-red-400 text-sm mt-1">{errors.email}</p>}
-                </div>
-
-                <button
-                  onClick={handleNext}
-                  className="w-full bg-root-green text-white font-bold text-base py-4 rounded-xl hover:bg-green-700 transition-colors mt-2 min-h-[56px]"
-                >
-                  Next →
-                </button>
-              </div>
-            )}
-
-            {/* Step 2 */}
-            {step === 2 && (
-              <div className="space-y-5">
-                <div>
-                  <label className="block text-white font-semibold text-sm mb-2">
-                    What&apos;s your brand&apos;s website URL?
-                  </label>
-                  <input
-                    type="url"
-                    value={formData.website}
-                    onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                    placeholder="https://yourbrand.com"
-                    className={`w-full bg-white/5 border ${errors.website ? "border-red-500" : "border-white/10"} rounded-xl px-4 py-3.5 text-white placeholder-white/30 focus:outline-none focus:border-root-green transition-colors`}
-                  />
-                  {errors.website && <p className="text-red-400 text-sm mt-1">{errors.website}</p>}
-                </div>
-
-                <div>
-                  <label className="block text-white font-semibold text-sm mb-3">
-                    What&apos;s your current monthly ad spend?
-                  </label>
-                  <div className="space-y-2">
-                    {AD_SPEND_OPTIONS.map((opt) => (
-                      <label
-                        key={opt.value}
-                        className={`flex items-center gap-3 p-3.5 rounded-xl border cursor-pointer transition-all ${
-                          formData.adSpend === opt.value
-                            ? "border-root-green bg-root-green/10"
-                            : "border-white/10 bg-white/5 hover:border-white/30"
-                        }`}
-                      >
-                        <div className={`w-5 h-5 rounded-full border-2 shrink-0 flex items-center justify-center transition-all ${
-                          formData.adSpend === opt.value ? "border-root-green bg-root-green" : "border-white/30"
-                        }`}>
-                          {formData.adSpend === opt.value && (
-                            <div className="w-2 h-2 rounded-full bg-white" />
-                          )}
-                        </div>
-                        <span className="text-white text-sm">{opt.label}</span>
-                        <input
-                          type="radio"
-                          name="adSpend"
-                          value={opt.value}
-                          checked={formData.adSpend === opt.value}
-                          onChange={(e) => setFormData({ ...formData, adSpend: e.target.value })}
-                          className="sr-only"
-                        />
-                      </label>
-                    ))}
-                  </div>
-                  {errors.adSpend && <p className="text-red-400 text-sm mt-1">{errors.adSpend}</p>}
-                </div>
-
-                <button
-                  onClick={handleNext}
-                  className="w-full bg-root-green text-white font-bold text-base py-4 rounded-xl hover:bg-green-700 transition-colors min-h-[56px]"
-                >
-                  Next →
-                </button>
-              </div>
-            )}
-
-            {/* Step 3 */}
-            {step === 3 && (
-              <div className="space-y-5">
-                <div>
-                  <label className="block text-white font-semibold text-sm mb-3">
-                    What&apos;s the biggest challenge with your paid social right now?
-                  </label>
-                  <div className="space-y-2">
-                    {CHALLENGE_OPTIONS.map((opt) => (
-                      <label
-                        key={opt.value}
-                        className={`flex items-center gap-3 p-3.5 rounded-xl border cursor-pointer transition-all ${
-                          formData.challenge === opt.value
-                            ? "border-root-green bg-root-green/10"
-                            : "border-white/10 bg-white/5 hover:border-white/30"
-                        }`}
-                      >
-                        <div className={`w-5 h-5 rounded-full border-2 shrink-0 flex items-center justify-center transition-all ${
-                          formData.challenge === opt.value ? "border-root-green bg-root-green" : "border-white/30"
-                        }`}>
-                          {formData.challenge === opt.value && (
-                            <div className="w-2 h-2 rounded-full bg-white" />
-                          )}
-                        </div>
-                        <span className="text-white text-sm">{opt.label}</span>
-                        <input
-                          type="radio"
-                          name="challenge"
-                          value={opt.value}
-                          checked={formData.challenge === opt.value}
-                          onChange={(e) => setFormData({ ...formData, challenge: e.target.value })}
-                          className="sr-only"
-                        />
-                      </label>
-                    ))}
-                  </div>
-                  {errors.challenge && <p className="text-red-400 text-sm mt-1">{errors.challenge}</p>}
-                </div>
-
-                {/* Other free text */}
-                {formData.challenge === "other" && (
+            {/* Step container */}
+            <div
+              key={step}
+              className="step-enter mt-8"
+              style={{
+                background: "#161616",
+                border: "1px solid rgba(255,255,255,0.07)",
+                borderRadius: "20px",
+                padding: "clamp(1.5rem, 4vw, 2.25rem)",
+              }}
+            >
+              {/* Step 1 */}
+              {step === 1 && (
+                <div className="space-y-5">
                   <div>
-                    <textarea
-                      value={formData.challengeOther}
-                      onChange={(e) => setFormData({ ...formData, challengeOther: e.target.value })}
-                      placeholder="Tell us about your challenge..."
-                      rows={3}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-white/30 focus:outline-none focus:border-root-green transition-colors resize-none"
+                    <label className="block font-semibold text-sm mb-2.5" style={{ color: "rgba(255,255,255,0.8)" }}>
+                      What&apos;s your first name?
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.firstName}
+                      onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                      placeholder="e.g. Alex"
+                      className="form-input w-full rounded-xl px-4 py-4 text-white placeholder-white/20"
+                      style={{
+                        background: "rgba(255,255,255,0.04)",
+                        border: `1.5px solid ${errors.firstName ? "#EF4444" : "rgba(255,255,255,0.1)"}`,
+                        fontSize: "16px",
+                        outline: "none",
+                      }}
+                      onFocus={(e) => {
+                        e.currentTarget.style.borderColor = "#2D8B3C";
+                        e.currentTarget.style.boxShadow = "0 0 0 3px rgba(45,139,60,0.15)";
+                      }}
+                      onBlur={(e) => {
+                        e.currentTarget.style.borderColor = errors.firstName ? "#EF4444" : "rgba(255,255,255,0.1)";
+                        e.currentTarget.style.boxShadow = "none";
+                      }}
                     />
+                    {errors.firstName && (
+                      <p className="text-red-400 text-xs mt-1.5">{errors.firstName}</p>
+                    )}
                   </div>
-                )}
 
-                <button
-                  onClick={handleSubmit}
-                  disabled={submitting}
-                  className="w-full bg-root-green text-white font-bold text-base py-4 rounded-xl hover:bg-green-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed min-h-[56px]"
-                >
-                  {submitting ? "Submitting..." : "Get My Free Audit →"}
-                </button>
+                  <div>
+                    <label className="block font-semibold text-sm mb-2.5" style={{ color: "rgba(255,255,255,0.8)" }}>
+                      What&apos;s your email address?
+                    </label>
+                    <input
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      placeholder="you@yourbrand.com"
+                      className="form-input w-full rounded-xl px-4 py-4 text-white placeholder-white/20"
+                      style={{
+                        background: "rgba(255,255,255,0.04)",
+                        border: `1.5px solid ${errors.email ? "#EF4444" : "rgba(255,255,255,0.1)"}`,
+                        fontSize: "16px",
+                        outline: "none",
+                      }}
+                      onFocus={(e) => {
+                        e.currentTarget.style.borderColor = "#2D8B3C";
+                        e.currentTarget.style.boxShadow = "0 0 0 3px rgba(45,139,60,0.15)";
+                      }}
+                      onBlur={(e) => {
+                        e.currentTarget.style.borderColor = errors.email ? "#EF4444" : "rgba(255,255,255,0.1)";
+                        e.currentTarget.style.boxShadow = "none";
+                      }}
+                    />
+                    {errors.email && (
+                      <p className="text-red-400 text-xs mt-1.5">{errors.email}</p>
+                    )}
+                  </div>
 
-                <p className="text-white/30 text-xs text-center">
-                  By submitting, you agree to be contacted by Root Social about your audit.
-                </p>
-              </div>
-            )}
+                  <button
+                    onClick={handleNext}
+                    className="btn-green w-full rounded-xl py-4 text-base mt-1 min-h-[56px]"
+                    style={{ fontSize: "1rem" }}
+                  >
+                    Next Step →
+                  </button>
+                </div>
+              )}
+
+              {/* Step 2 */}
+              {step === 2 && (
+                <div className="space-y-6">
+                  <div>
+                    <label className="block font-semibold text-sm mb-2.5" style={{ color: "rgba(255,255,255,0.8)" }}>
+                      What&apos;s your brand&apos;s website URL?
+                    </label>
+                    <input
+                      type="url"
+                      value={formData.website}
+                      onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+                      placeholder="https://yourbrand.com"
+                      className="form-input w-full rounded-xl px-4 py-4 text-white placeholder-white/20"
+                      style={{
+                        background: "rgba(255,255,255,0.04)",
+                        border: `1.5px solid ${errors.website ? "#EF4444" : "rgba(255,255,255,0.1)"}`,
+                        fontSize: "16px",
+                        outline: "none",
+                      }}
+                      onFocus={(e) => {
+                        e.currentTarget.style.borderColor = "#2D8B3C";
+                        e.currentTarget.style.boxShadow = "0 0 0 3px rgba(45,139,60,0.15)";
+                      }}
+                      onBlur={(e) => {
+                        e.currentTarget.style.borderColor = errors.website ? "#EF4444" : "rgba(255,255,255,0.1)";
+                        e.currentTarget.style.boxShadow = "none";
+                      }}
+                    />
+                    {errors.website && (
+                      <p className="text-red-400 text-xs mt-1.5">{errors.website}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block font-semibold text-sm mb-3" style={{ color: "rgba(255,255,255,0.8)" }}>
+                      What&apos;s your current monthly ad spend?
+                    </label>
+                    <div className="space-y-2">
+                      {AD_SPEND_OPTIONS.map((opt) => {
+                        const isSelected = formData.adSpend === opt.value;
+                        return (
+                          <label
+                            key={opt.value}
+                            className="flex items-center gap-3.5 p-4 rounded-xl cursor-pointer"
+                            style={{
+                              border: `1.5px solid ${isSelected ? "#2D8B3C" : "rgba(255,255,255,0.08)"}`,
+                              background: isSelected ? "rgba(45,139,60,0.1)" : "rgba(255,255,255,0.03)",
+                              transition: "all 0.2s ease",
+                            }}
+                          >
+                            <div
+                              className="w-5 h-5 rounded-full border-2 shrink-0 flex items-center justify-center transition-all"
+                              style={{
+                                borderColor: isSelected ? "#2D8B3C" : "rgba(255,255,255,0.25)",
+                                background: isSelected ? "#2D8B3C" : "transparent",
+                              }}
+                            >
+                              {isSelected && (
+                                <div className="w-2 h-2 rounded-full bg-white" />
+                              )}
+                            </div>
+                            <span className="text-sm font-medium" style={{ color: isSelected ? "white" : "rgba(255,255,255,0.7)" }}>
+                              {opt.label}
+                            </span>
+                            <input
+                              type="radio"
+                              name="adSpend"
+                              value={opt.value}
+                              checked={isSelected}
+                              onChange={(e) => setFormData({ ...formData, adSpend: e.target.value })}
+                              className="sr-only"
+                            />
+                          </label>
+                        );
+                      })}
+                    </div>
+                    {errors.adSpend && (
+                      <p className="text-red-400 text-xs mt-1.5">{errors.adSpend}</p>
+                    )}
+                  </div>
+
+                  <button
+                    onClick={handleNext}
+                    className="btn-green w-full rounded-xl py-4 text-base min-h-[56px]"
+                  >
+                    Next Step →
+                  </button>
+                </div>
+              )}
+
+              {/* Step 3 */}
+              {step === 3 && (
+                <div className="space-y-6">
+                  <div>
+                    <label className="block font-semibold text-sm mb-3" style={{ color: "rgba(255,255,255,0.8)" }}>
+                      What&apos;s the biggest challenge with your paid social right now?
+                    </label>
+                    <div className="space-y-2">
+                      {CHALLENGE_OPTIONS.map((opt) => {
+                        const isSelected = formData.challenge === opt.value;
+                        return (
+                          <label
+                            key={opt.value}
+                            className="flex items-center gap-3.5 p-4 rounded-xl cursor-pointer"
+                            style={{
+                              border: `1.5px solid ${isSelected ? "#2D8B3C" : "rgba(255,255,255,0.08)"}`,
+                              background: isSelected ? "rgba(45,139,60,0.1)" : "rgba(255,255,255,0.03)",
+                              transition: "all 0.2s ease",
+                            }}
+                          >
+                            <div
+                              className="w-5 h-5 rounded-full border-2 shrink-0 flex items-center justify-center transition-all"
+                              style={{
+                                borderColor: isSelected ? "#2D8B3C" : "rgba(255,255,255,0.25)",
+                                background: isSelected ? "#2D8B3C" : "transparent",
+                              }}
+                            >
+                              {isSelected && (
+                                <div className="w-2 h-2 rounded-full bg-white" />
+                              )}
+                            </div>
+                            <span className="text-sm font-medium" style={{ color: isSelected ? "white" : "rgba(255,255,255,0.7)" }}>
+                              {opt.label}
+                            </span>
+                            <input
+                              type="radio"
+                              name="challenge"
+                              value={opt.value}
+                              checked={isSelected}
+                              onChange={(e) => setFormData({ ...formData, challenge: e.target.value })}
+                              className="sr-only"
+                            />
+                          </label>
+                        );
+                      })}
+                    </div>
+                    {errors.challenge && (
+                      <p className="text-red-400 text-xs mt-1.5">{errors.challenge}</p>
+                    )}
+                  </div>
+
+                  {/* Other free text */}
+                  {formData.challenge === "other" && (
+                    <div>
+                      <textarea
+                        value={formData.challengeOther}
+                        onChange={(e) => setFormData({ ...formData, challengeOther: e.target.value })}
+                        placeholder="Tell us about your challenge..."
+                        rows={3}
+                        className="w-full rounded-xl px-4 py-4 text-white placeholder-white/20 resize-none"
+                        style={{
+                          background: "rgba(255,255,255,0.04)",
+                          border: "1.5px solid rgba(255,255,255,0.1)",
+                          fontSize: "16px",
+                          outline: "none",
+                          transition: "border-color 0.2s ease, box-shadow 0.2s ease",
+                        }}
+                        onFocus={(e) => {
+                          e.currentTarget.style.borderColor = "#2D8B3C";
+                          e.currentTarget.style.boxShadow = "0 0 0 3px rgba(45,139,60,0.15)";
+                        }}
+                        onBlur={(e) => {
+                          e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
+                          e.currentTarget.style.boxShadow = "none";
+                        }}
+                      />
+                    </div>
+                  )}
+
+                  <button
+                    onClick={handleSubmit}
+                    disabled={submitting}
+                    className="btn-green w-full rounded-xl text-base min-h-[60px] disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+                    style={{ fontSize: "1.05rem", padding: "16px 24px" }}
+                  >
+                    {submitting ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <svg className="animate-spin" width="18" height="18" viewBox="0 0 24 24" fill="none">
+                          <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="60" strokeDashoffset="15" strokeLinecap="round"/>
+                        </svg>
+                        Submitting...
+                      </span>
+                    ) : (
+                      "Get My Free Audit →"
+                    )}
+                  </button>
+
+                  <p className="text-center" style={{ color: "rgba(255,255,255,0.2)", fontSize: "0.75rem" }}>
+                    By submitting, you agree to be contacted by Root Social about your audit.
+                  </p>
+                </div>
+              )}
+            </div>
           </>
         ) : qualified ? (
           /* Qualified — show Calendly */
@@ -333,9 +469,12 @@ export default function AuditForm() {
           />
         ) : (
           /* Disqualified — polite message */
-          <div className="text-center py-8">
-            <div className="w-16 h-16 rounded-full bg-root-green/20 flex items-center justify-center mx-auto mb-6">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div className="text-center py-10">
+            <div
+              className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6"
+              style={{ background: "rgba(45,139,60,0.15)", border: "1px solid rgba(45,139,60,0.25)" }}
+            >
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
                 <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" stroke="#2D8B3C" strokeWidth="2"/>
                 <path d="M12 8v4M12 16h.01" stroke="#2D8B3C" strokeWidth="2" strokeLinecap="round"/>
               </svg>
@@ -343,16 +482,16 @@ export default function AuditForm() {
             <h3 className="text-white font-black text-2xl md:text-3xl mb-4">
               Thanks for your interest, {formData.firstName}!
             </h3>
-            <p className="text-white/60 text-base leading-relaxed max-w-sm mx-auto">
+            <p className="leading-relaxed max-w-sm mx-auto" style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.95rem" }}>
               At this stage, our services are best suited for brands spending £1,000+ per month on ads.
             </p>
-            <p className="text-white/60 text-base leading-relaxed max-w-sm mx-auto mt-3">
-              Follow us on Instagram for tips on getting started and growing to that level:
+            <p className="leading-relaxed max-w-sm mx-auto mt-3" style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.95rem" }}>
+              Follow us on Instagram for tips on getting started:
             </p>
-            <p className="text-root-green font-bold text-lg mt-4">
+            <p className="font-bold text-lg mt-4" style={{ color: "#2D8B3C" }}>
               @rootsocialmedia
             </p>
-            <p className="text-white/40 text-sm mt-6">
+            <p className="mt-6" style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.8rem" }}>
               We hope to work with you when you&apos;re ready to scale. 🚀
             </p>
           </div>
