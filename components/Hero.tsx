@@ -75,12 +75,7 @@ export default function Hero() {
         {/* Logo */}
         <div className="flex items-center justify-center mb-12 animate-fade-in">
           <div className="flex items-center gap-3">
-            <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Root Social">
-              <circle cx="22" cy="22" r="22" fill="#2D8B3C" />
-              <rect x="20" y="27" width="4" height="9" rx="1.5" fill="white" />
-              <path d="M22 7 L33 24 H11 Z" fill="white" />
-              <path d="M22 14 L30 28 H14 Z" fill="#2D8B3C" />
-            </svg>
+            <img src="/logo.png" alt="Root Social" width={44} height={44} className="rounded-lg" />
             <span className="text-white text-xl font-black tracking-widest uppercase" style={{ letterSpacing: "0.12em" }}>Root Social</span>
           </div>
         </div>
