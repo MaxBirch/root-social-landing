@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import CalendlyEmbed from "./CalendlyEmbed";
 import { trackPixelEvent } from "./MetaPixel";
 
@@ -46,7 +46,44 @@ export default function AuditForm() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [qualified, setQualified] = useState(false);
+  const [viewContentTracked, setViewContentTracked] = useState(false);
+  const [initiateCheckoutTracked, setInitiateCheckoutTracked] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Track ViewContent when form section scrolls into view
+  useEffect(() => {
+    if (viewContentTracked) return;
+    
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !viewContentTracked) {
+          trackPixelEvent("ViewContent", {
+            content_name: "Audit Form",
+            content_category: "Lead Generation",
+          });
+          setViewContentTracked(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+    
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+    
+    return () => observer.disconnect();
+  }, [viewContentTracked]);
+
+  // Track InitiateCheckout when user starts filling Step 1
+  const trackInitiateCheckout = () => {
+    if (!initiateCheckoutTracked) {
+      trackPixelEvent("InitiateCheckout", {
+        content_name: "Audit Form Step 1",
+        content_category: "Lead Generation",
+      });
+      setInitiateCheckoutTracked(true);
+    }
+  };
 
   const scrollToTop = () => {
     sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -83,6 +120,12 @@ export default function AuditForm() {
     if (valid) {
       setStep(step + 1);
       scrollToTop();
+      
+      // Track form progression
+      trackPixelEvent("CustomEvent", {
+        content_name: `Audit Form Step ${step + 1}`,
+        content_category: "Form Progression",
+      });
     }
   };
 
@@ -92,6 +135,9 @@ export default function AuditForm() {
 
     const isQualified = !DISQUALIFYING_SPENDS.includes(formData.adSpend);
 
+    // Generate event ID for deduplication between pixel and CAPI
+    const eventId = crypto.randomUUID();
+    
     try {
       const response = await fetch("/api/submit-lead", {
         method: "POST",
@@ -102,6 +148,7 @@ export default function AuditForm() {
           qualified: isQualified,
           source: "meta-ads",
           timestamp: new Date().toISOString(),
+          eventId, // Pass event ID for deduplication
         }),
       });
 
@@ -112,10 +159,12 @@ export default function AuditForm() {
       console.error("Submit error:", err);
     }
 
+    // Track pixel event with event ID for deduplication
     if (isQualified) {
       trackPixelEvent("Lead", {
         content_name: "Audit Form Submission",
         content_category: "Lead Generation",
+        eventID: eventId, // For deduplication with CAPI
       });
     }
 
@@ -217,6 +266,11 @@ export default function AuditForm() {
                       value={formData.firstName}
                       onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                       onKeyDown={(e) => e.key === "Enter" && handleNext()}
+                      onFocus={(e) => {
+                        trackInitiateCheckout();
+                        e.currentTarget.style.borderColor = "#2D8B3C";
+                        e.currentTarget.style.boxShadow = "0 0 0 3px rgba(45,139,60,0.15)";
+                      }}
                       placeholder="e.g. Alex"
                       autoComplete="given-name"
                       className="form-input w-full rounded-xl px-4 py-4 text-white placeholder-white/20"
@@ -225,10 +279,6 @@ export default function AuditForm() {
                         border: `1.5px solid ${errors.firstName ? "#EF4444" : "rgba(255,255,255,0.1)"}`,
                         fontSize: "16px",
                         outline: "none",
-                      }}
-                      onFocus={(e) => {
-                        e.currentTarget.style.borderColor = "#2D8B3C";
-                        e.currentTarget.style.boxShadow = "0 0 0 3px rgba(45,139,60,0.15)";
                       }}
                       onBlur={(e) => {
                         e.currentTarget.style.borderColor = errors.firstName ? "#EF4444" : "rgba(255,255,255,0.1)";

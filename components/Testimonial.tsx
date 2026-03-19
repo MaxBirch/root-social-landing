@@ -210,21 +210,37 @@ export default function Testimonial() {
           >
             Trusted by
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-            {["Hades Agency", "Phantom Jewels", "Chelsea FC & CIFA", "Wycombe Wanderers", "Body Boom", "Pumpables"].map(
-              (brand) => (
-                <span
-                  key={brand}
-                  style={{
-                    color: "rgba(26,26,26,0.35)",
-                    fontSize: "0.8rem",
-                    fontWeight: 700,
-                  }}
-                >
-                  {brand}
-                </span>
-              )
-            )}
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
+            <img 
+              src="/logos/hades-agency.png" 
+              alt="Hades Agency" 
+              className="h-8 opacity-60 hover:opacity-80 transition-opacity duration-200"
+            />
+            <img 
+              src="/logos/phantom-jewels.png" 
+              alt="Phantom Jewels" 
+              className="h-8 opacity-60 hover:opacity-80 transition-opacity duration-200"
+            />
+            <img 
+              src="/logos/spectra.png" 
+              alt="Spectra" 
+              className="h-8 opacity-60 hover:opacity-80 transition-opacity duration-200"
+            />
+            <img 
+              src="/logos/apex.png" 
+              alt="APEX" 
+              className="h-8 opacity-60 hover:opacity-80 transition-opacity duration-200"
+            />
+            <img 
+              src="/logos/body-boom.png" 
+              alt="Body Boom" 
+              className="h-8 opacity-60 hover:opacity-80 transition-opacity duration-200"
+            />
+            <img 
+              src="/logos/pumpables.png" 
+              alt="Pumpables" 
+              className="h-8 opacity-60 hover:opacity-80 transition-opacity duration-200"
+            />
           </div>
         </div>
       </div>

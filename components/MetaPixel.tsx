@@ -41,9 +41,17 @@ export default function MetaPixel() {
   );
 }
 
-// Helper to fire pixel events
+// Helper to fire pixel events with optional event ID for deduplication
 export function trackPixelEvent(event: string, params?: Record<string, unknown>) {
   if (typeof window !== "undefined" && (window as unknown as { fbq?: Function }).fbq) {
-    (window as unknown as { fbq: Function }).fbq("track", event, params);
+    const fbq = (window as unknown as { fbq: Function }).fbq;
+    
+    // Extract eventID if provided for deduplication
+    if (params?.eventID) {
+      const { eventID, ...eventParams } = params;
+      fbq("track", event, eventParams, { eventID });
+    } else {
+      fbq("track", event, params);
+    }
   }
 }

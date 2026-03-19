@@ -19,12 +19,41 @@ export default function CalendlyEmbed({ firstName, email }: CalendlyEmbedProps) 
     document.head.appendChild(script);
 
     // Listen for Calendly booking events
-    const handleMessage = (e: MessageEvent) => {
+    const handleMessage = async (e: MessageEvent) => {
       if (e.data?.event === "calendly.event_scheduled") {
+        const eventId = crypto.randomUUID();
+        
+        // Track pixel event
         trackPixelEvent("Schedule", {
           content_name: "Audit Call Booked",
           content_category: "Lead",
+          eventID: eventId,
         });
+        
+        // Send CAPI event (most valuable conversion)
+        try {
+          await fetch("/api/meta-capi", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              eventName: "Schedule",
+              eventTime: Math.floor(new Date().getTime() / 1000),
+              eventId,
+              userData: {
+                email,
+                firstName,
+              },
+              customData: {
+                content_name: "Audit Call Booked",
+                content_category: "Lead",
+                value: 500, // High value conversion
+                currency: "GBP",
+              },
+            }),
+          });
+        } catch (capiError) {
+          console.error("CAPI error for Schedule event:", capiError);
+        }
       }
     };
 

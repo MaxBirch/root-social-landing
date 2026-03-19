@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { trackPixelEvent } from "./MetaPixel";
 
 export default function ExitIntent() {
   const [visible, setVisible] = useState(false);
@@ -44,14 +45,33 @@ export default function ExitIntent() {
     }
     setError("");
 
+    // Generate event ID for deduplication
+    const eventId = crypto.randomUUID();
+
     try {
-      await fetch("/api/exit-lead", {
+      const response = await fetch("/api/exit-lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, timestamp: new Date().toISOString() }),
       });
+      
+      const result = await response.json();
+      
+      // Fire pixel event with event ID for deduplication with CAPI
+      trackPixelEvent("Lead", {
+        content_name: "Exit Intent Email",
+        content_category: "Exit Intent",
+        eventID: result.eventId || eventId,
+      });
+      
     } catch (err) {
       console.error("Exit lead submit error:", err);
+      // Still fire pixel event even if API fails
+      trackPixelEvent("Lead", {
+        content_name: "Exit Intent Email",
+        content_category: "Exit Intent",
+        eventID: eventId,
+      });
     }
 
     setSubmitted(true);
