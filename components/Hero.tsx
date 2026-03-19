@@ -134,12 +134,12 @@ export default function Hero() {
                 </svg>
               ))}
             </div>
-            <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.8rem", fontWeight: 600 }}>5.0 Google Rating</span>
+            <span style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.8rem", fontWeight: 600 }}>5.0 Google Rating</span>
           </div>
-          <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
-          <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.8rem", fontWeight: 600 }}>50+ Brands Scaled</span>
-          <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
-          <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.8rem", fontWeight: 600 }}>£20M+ Revenue Generated</span>
+          <span style={{ color: "rgba(255,255,255,0.35)" }}>|</span>
+          <span style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.8rem", fontWeight: 600 }}>50+ Brands Scaled</span>
+          <span style={{ color: "rgba(255,255,255,0.35)" }}>|</span>
+          <span style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.8rem", fontWeight: 600 }}>£20M+ Revenue Generated</span>
         </div>
 
         {/* CTA Button */}
@@ -162,11 +162,11 @@ export default function Hero() {
                 className="w-2 h-2 rounded-full animate-pulse"
                 style={{ background: "#ef4444" }}
               />
-              <span style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.8rem", fontWeight: 600 }}>
+              <span style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.8rem", fontWeight: 600 }}>
                 Only 3 audit spots open this month
               </span>
             </div>
-            <p style={{ color: "rgba(255,255,255,0.25)", fontSize: "0.78rem" }}>
+            <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.78rem" }}>
               No commitment · No contracts · Takes 2 minutes
             </p>
           </div>
@@ -177,28 +177,28 @@ export default function Hero() {
           className="mt-14 animate-fade-in stagger-5"
           style={{ opacity: 0 }}
         >
-          <p style={{ color: "rgba(255,255,255,0.2)", fontSize: "0.72rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "12px" }}>
+          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.72rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "12px" }}>
             We manage campaigns across
           </p>
           <div className="flex items-center justify-center gap-6">
             {/* Meta */}
-            <div className="flex items-center gap-1.5" style={{ color: "rgba(255,255,255,0.3)" }}>
+            <div className="flex items-center gap-1.5" style={{ color: "rgba(255,255,255,0.55)" }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 13.5v-3.25L8.5 14 7 12.5l3.5-2v-1L7 7.5 8.5 6l2.5 1.75V4.5h2v3.25L15.5 6 17 7.5l-3.5 2v1l3.5 2L15.5 14l-2.5-1.75V15.5h-2z"/>
               </svg>
               <span style={{ fontSize: "0.8rem", fontWeight: 700 }}>Meta Ads</span>
             </div>
-            <span style={{ color: "rgba(255,255,255,0.1)" }}>·</span>
+            <span style={{ color: "rgba(255,255,255,0.35)" }}>·</span>
             {/* Google */}
-            <div className="flex items-center gap-1.5" style={{ color: "rgba(255,255,255,0.3)" }}>
+            <div className="flex items-center gap-1.5" style={{ color: "rgba(255,255,255,0.55)" }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.25 5 12c0-4.1 3.2-7.27 7.2-7.27 3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.56 2 12.1 2C6.42 2 2.03 6.8 2.03 12c0 5.05 4.13 10 10.22 10 5.35 0 9.25-3.67 9.25-9.09 0-1.15-.15-1.81-.15-1.81z"/>
               </svg>
               <span style={{ fontSize: "0.8rem", fontWeight: 700 }}>Google Ads</span>
             </div>
-            <span style={{ color: "rgba(255,255,255,0.1)" }}>·</span>
+            <span style={{ color: "rgba(255,255,255,0.35)" }}>·</span>
             {/* TikTok */}
-            <div className="flex items-center gap-1.5" style={{ color: "rgba(255,255,255,0.3)" }}>
+            <div className="flex items-center gap-1.5" style={{ color: "rgba(255,255,255,0.55)" }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/>
               </svg>

@@ -204,8 +204,8 @@ export default function AuditForm() {
               >
                 Find out where your ad budget is leaking
               </h2>
-              <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.95rem" }}>
-                Takes 2 minutes. We review your account <strong className="text-white/60">before</strong> we speak.
+              <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.95rem" }}>
+                Takes 2 minutes. We review your account <strong className="text-white/80">before</strong> we speak.
               </p>
 
               {/* Scarcity nudge */}
@@ -238,7 +238,7 @@ export default function AuditForm() {
                   />
                 ))}
               </div>
-              <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>
+              <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.55)" }}>
                 Step {step} of 3 — {step === 1 ? "Your details" : step === 2 ? "Your business" : "Your challenge"}
               </p>
             </div>
@@ -325,7 +325,7 @@ export default function AuditForm() {
                     Continue →
                   </button>
 
-                  <p className="text-center" style={{ color: "rgba(255,255,255,0.2)", fontSize: "0.72rem" }}>
+                  <p className="text-center" style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.72rem" }}>
                     No spam. No cold calls. Just your free audit.
                   </p>
                 </div>
@@ -511,21 +511,21 @@ export default function AuditForm() {
                       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2D8B3C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                       </svg>
-                      <span style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.72rem" }}>100% free</span>
+                      <span style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.72rem" }}>100% free</span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2D8B3C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                         <circle cx="12" cy="12" r="10"/>
                         <path d="M12 8v4M12 16h.01"/>
                       </svg>
-                      <span style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.72rem" }}>No commitment</span>
+                      <span style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.72rem" }}>No commitment</span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2D8B3C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                         <circle cx="12" cy="12" r="10"/>
                         <polyline points="12 6 12 12 16 14"/>
                       </svg>
-                      <span style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.72rem" }}>2 min to complete</span>
+                      <span style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.72rem" }}>2 min to complete</span>
                     </div>
                   </div>
                 </div>

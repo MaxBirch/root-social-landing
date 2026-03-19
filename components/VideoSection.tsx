@@ -80,7 +80,7 @@ export default function VideoSection() {
           >
             What we&apos;ve done for brands like yours
           </h2>
-          <p className="mt-3" style={{ color: "rgba(255,255,255,0.4)", fontSize: "1rem" }}>
+          <p className="mt-3" style={{ color: "rgba(255,255,255,0.65)", fontSize: "1rem" }}>
             Not projections. Not case study templates. Real numbers from real clients.
           </p>
         </div>
@@ -111,7 +111,7 @@ export default function VideoSection() {
                 >
                   {cs.industry}
                 </span>
-                <span style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.75rem" }}>
+                <span style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.75rem" }}>
                   {cs.timeframe}
                 </span>
               </div>
@@ -176,10 +176,10 @@ export default function VideoSection() {
                   <path d="M5 3l14 9-14 9V3z" fill="#2D8B3C" />
                 </svg>
               </div>
-              <p className="font-bold" style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem" }}>
+              <p className="font-bold" style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.9rem" }}>
                 Max introduces Root Social — coming soon
               </p>
-              <p className="mt-1" style={{ color: "rgba(255,255,255,0.25)", fontSize: "0.78rem" }}>
+              <p className="mt-1" style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.78rem" }}>
                 What you&apos;ll get in your free audit · 90 seconds
               </p>
             </div>

@@ -187,7 +187,7 @@ export default function Testimonial() {
                 width: active === i ? "28px" : "8px",
                 height: "8px",
                 borderRadius: "9999px",
-                background: active === i ? "#2D8B3C" : "rgba(26,26,26,0.2)",
+                background: active === i ? "#2D8B3C" : "rgba(26,26,26,0.35)",
                 border: "none",
                 cursor: "pointer",
               }}
@@ -200,7 +200,7 @@ export default function Testimonial() {
         <div className="mt-10 text-center">
           <p
             style={{
-              color: "rgba(26,26,26,0.35)",
+              color: "rgba(26,26,26,0.55)",
               fontSize: "0.72rem",
               fontWeight: 700,
               textTransform: "uppercase",

@@ -113,9 +113,9 @@ export default function ExitIntent() {
         <button
           onClick={handleClose}
           className="absolute top-4 right-4 transition-colors"
-          style={{ color: "rgba(255,255,255,0.3)" }}
+          style={{ color: "rgba(255,255,255,0.5)" }}
           onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
-          onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.3)")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.5)")}
           aria-label="Close"
         >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
@@ -176,7 +176,7 @@ export default function ExitIntent() {
               </button>
             </form>
 
-            <p className="text-center mt-3" style={{ color: "rgba(255,255,255,0.2)", fontSize: "0.72rem" }}>
+            <p className="text-center mt-3" style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.72rem" }}>
               No spam. One email. Actionable insights only.
             </p>
           </>

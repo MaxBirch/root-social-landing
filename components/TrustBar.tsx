@@ -97,7 +97,7 @@ export default function TrustBar() {
               <div className="font-black text-white" style={{ fontSize: "1.4rem", lineHeight: 1.1 }}>
                 {stat.value}
               </div>
-              <div style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.72rem", fontWeight: 600, textAlign: "center", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.72rem", fontWeight: 600, textAlign: "center", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                 {stat.label}
               </div>
             </div>

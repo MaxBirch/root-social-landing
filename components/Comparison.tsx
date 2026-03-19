@@ -104,8 +104,8 @@ export default function Comparison() {
                   border: "1px solid rgba(26,26,26,0.07)",
                 }}
               >
-                <span className="shrink-0 mt-0.5 font-black text-base leading-none" style={{ color: "rgba(26,26,26,0.2)" }}>✕</span>
-                <p className="text-sm leading-snug" style={{ color: "rgba(26,26,26,0.45)" }}>{row.others}</p>
+                <span className="shrink-0 mt-0.5 font-black text-base leading-none" style={{ color: "rgba(26,26,26,0.4)" }}>✕</span>
+                <p className="text-sm leading-snug" style={{ color: "rgba(26,26,26,0.6)" }}>{row.others}</p>
               </div>
             </div>
           ))}
@@ -135,10 +135,10 @@ export default function Comparison() {
             </div>
             <div className="px-8 py-6" style={{ background: "#1A1A1A", borderBottom: "2px solid rgba(255,255,255,0.08)" }}>
               <div className="flex items-center gap-2.5 mb-1">
-                <div className="w-3 h-3 rounded-full" style={{ background: "rgba(255,255,255,0.2)" }} />
+                <div className="w-3 h-3 rounded-full" style={{ background: "rgba(255,255,255,0.4)" }} />
                 <p className="font-black text-xl text-white">Other Agencies</p>
               </div>
-              <p className="text-sm font-semibold" style={{ color: "rgba(255,255,255,0.4)" }}>What you typically get</p>
+              <p className="text-sm font-semibold" style={{ color: "rgba(255,255,255,0.55)" }}>What you typically get</p>
             </div>
           </div>
 
@@ -167,9 +167,9 @@ export default function Comparison() {
                 }}
               >
                 <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(255,255,255,0.05)" }}>
-                  <span className="font-black text-sm" style={{ color: "rgba(255,255,255,0.22)" }}>✕</span>
+                  <span className="font-black text-sm" style={{ color: "rgba(255,255,255,0.4)" }}>✕</span>
                 </div>
-                <p className="leading-snug" style={{ color: "rgba(255,255,255,0.42)" }}>{row.others}</p>
+                <p className="leading-snug" style={{ color: "rgba(255,255,255,0.6)" }}>{row.others}</p>
               </div>
             </div>
           ))}
