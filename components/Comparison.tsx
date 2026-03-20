@@ -50,7 +50,6 @@ export default function Comparison() {
     // Fallback: reveal after short delay in case observer misses
     const fallback = setTimeout(() => inner?.classList.add("revealed"), 1200);
     return () => { observer.disconnect(); clearTimeout(fallback); };
-    return () => observer.disconnect();
   }, []);
 
   return (

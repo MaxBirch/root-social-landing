@@ -6,6 +6,7 @@ import Testimonial from "@/components/Testimonial";
 import AuditForm from "@/components/AuditForm";
 import Footer from "@/components/Footer";
 import ExitIntent from "@/components/ExitIntent";
+import StickyMobileCTA from "@/components/StickyMobileCTA";
 
 export default function Home() {
   return (
@@ -33,6 +34,9 @@ export default function Home() {
 
       {/* Exit Intent — desktop only, once per session */}
       <ExitIntent />
+
+      {/* Sticky mobile CTA — appears after scrolling past hero */}
+      <StickyMobileCTA />
     </main>
   );
 }

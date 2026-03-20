@@ -148,6 +148,11 @@ export default function VideoSection() {
           ))}
         </div>
 
+        {/* Anonymisation note */}
+        <p className="text-center mt-3 mb-2" style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.72rem" }}>
+          Client names anonymised for confidentiality
+        </p>
+
         {/* Video placeholder — ready when Max records */}
         <div
           className="mt-8 relative w-full overflow-hidden"
