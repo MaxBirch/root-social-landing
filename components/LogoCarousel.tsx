@@ -2,7 +2,7 @@
 
 const logos = [
   { src: "/logos/hades-agency.png", alt: "Hades Agency" },
-  { src: "/logos/phantom-jewels.png", alt: "Phantom Jewels" },
+  { src: "/logos/phantom-jewels.jpg", alt: "Phantom Jewels" },
   { src: "/logos/spectra.png", alt: "Spectra" },
   { src: "/logos/apex.png", alt: "Apex" },
   { src: "/logos/body-boom.png", alt: "Body Boom" },
@@ -71,10 +71,11 @@ export default function LogoCarousel() {
                 alt={logo.alt}
                 className="logo-carousel-img"
                 style={{
-                  height: "36px",
+                  height: "48px",
                   width: "auto",
+                  maxWidth: "160px",
                   objectFit: "contain",
-                  opacity: 0.6,
+                  opacity: 0.65,
                   filter: "brightness(0) invert(1)",
                   transition: "opacity 0.2s ease",
                 }}
