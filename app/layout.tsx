@@ -11,7 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Is Your Ad Budget Leaking? Get a FREE Audit  -  Root Social",
+  title: "Root Social FREE Audit",
   description: "We identify exactly where your paid social budget is wasting  -  then show you what we'd fix in 30 days. FREE audit, no commitment. 50+ brands scaled, £20M+ revenue generated.",
   robots: "noindex, nofollow",
   icons: {
