@@ -196,7 +196,7 @@ export default function AuditForm() {
                   border: "1px solid rgba(45,139,60,0.3)",
                 }}
               >
-                Free Audit — No Obligation
+                Free Audit - No Obligation
               </span>
               <h2
                 className="font-black leading-tight text-white mb-3"
@@ -239,7 +239,7 @@ export default function AuditForm() {
                 ))}
               </div>
               <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.55)" }}>
-                Step {step} of 3 — {step === 1 ? "About you" : step === 2 ? "Your ad account" : "Your biggest challenge"}
+                Step {step} of 3 - {step === 1 ? "About you" : step === 2 ? "Your ad account" : "Your biggest challenge"}
               </p>
             </div>
 
@@ -322,7 +322,7 @@ export default function AuditForm() {
                     onClick={handleNext}
                     className="btn-green w-full rounded-xl py-4 text-base mt-1 min-h-[56px]"
                   >
-                    Continue — Step 2 of 3 →
+                    Continue - Step 2 of 3 →
                   </button>
 
                   <p className="text-center" style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.72rem" }}>
@@ -408,7 +408,7 @@ export default function AuditForm() {
                   </div>
 
                   <button onClick={handleNext} className="btn-green w-full rounded-xl py-4 text-base min-h-[56px]">
-                    Continue — Step 3 of 3 →
+                    Continue - Step 3 of 3 →
                   </button>
                 </div>
               )}

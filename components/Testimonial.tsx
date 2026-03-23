@@ -8,7 +8,7 @@ const testimonials = [
     name: "Luke Durbin",
     role: "CEO, Hades Agency",
     quote:
-      "Root Social completely transformed our paid social. Within the first 8 weeks, we saw a 4x return on ad spend — something we hadn't come close to with our previous agency. The level of attention, creativity, and strategic thinking they bring is in a different league. I won't be going anywhere.",
+      "Root Social completely transformed our paid social. Within the first 8 weeks, we saw a 4x return on ad spend - something we hadn't come close to with our previous agency. The level of attention, creativity, and strategic thinking they bring is in a different league. I won't be going anywhere.",
     highlight: "4x return on ad spend",
     badge: "Verified Client",
   },
@@ -26,7 +26,7 @@ const testimonials = [
     name: "Amna Khan",
     role: "Founder, Phantom Jewels",
     quote:
-      "Root Social is efficient and hardworking. They've worked hard to get close to the results we want and keep improving. Easy going and to the point — none of the middlemen nonsense you get at other agencies. Refreshing to work with.",
+      "Root Social is efficient and hardworking. They've worked hard to get close to the results we want and keep improving. Easy going and to the point - none of the middlemen nonsense you get at other agencies. Refreshing to work with.",
     highlight: "none of the middlemen nonsense",
     badge: "Google Verified",
   },

@@ -134,13 +134,13 @@ export default function ExitIntent() {
                   border: "1px solid rgba(45,139,60,0.25)",
                 }}
               >
-                Wait — before you go
+                Wait - before you go
               </span>
               <h3 className="text-white font-black text-2xl leading-tight mb-3">
-                Before you go — we&apos;ll show you exactly where your budget is leaking
+                Before you go - we&apos;ll show you exactly where your budget is leaking
               </h3>
               <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.5)" }}>
-                Drop your email and get a free personalised breakdown — no call, no pitch, no strings.
+                Drop your email and get a free personalised breakdown - no call, no pitch, no strings.
               </p>
             </div>
 
