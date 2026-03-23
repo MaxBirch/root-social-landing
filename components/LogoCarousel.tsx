@@ -75,8 +75,9 @@ export default function LogoCarousel() {
                   width: "auto",
                   maxWidth: "160px",
                   objectFit: "contain",
-                  opacity: logo.darkBg ? 0.85 : 0.7,
-                  filter: logo.darkBg ? "grayscale(1) brightness(1.2)" : "brightness(0) invert(1)",
+                  opacity: 0.7,
+                  filter: logo.darkBg ? "grayscale(1) brightness(1.5)" : "brightness(0) invert(1)",
+                  mixBlendMode: logo.darkBg ? "screen" as const : undefined,
                   transition: "opacity 0.2s ease",
                 }}
               />
