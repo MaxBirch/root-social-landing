@@ -4,8 +4,8 @@ import { useState, useRef, useEffect } from "react";
 
 const faqs = [
   {
-    q: "What happens during the free audit?",
-    a: "We review your entire ad account, creative strategy, and funnel. You'll get a personalised breakdown of where budget is being wasted and exactly what we'd change in the first 30 days. No generic templates.",
+    q: "What happens during the FREE audit?",
+    a: "We review your entire ad account strategy and funnel. You'll get a personalised breakdown of where budget is being wasted and exactly what we'd change in the first 30 days. No generic templates.",
   },
   {
     q: "How is Root Social different from other agencies?",
@@ -26,10 +26,6 @@ const faqs = [
   {
     q: "How quickly will I see results?",
     a: "Most clients see measurable improvements within the first 30 days. Significant scaling typically happens in the 60 to 90 day range depending on your starting point and budget.",
-  },
-  {
-    q: "Do you handle the creative as well?",
-    a: "Yes. Ad creative is included with every package. We handle strategy, design, copy, and iteration.",
   },
   {
     q: "What if the audit shows my ads are already performing well?",
@@ -131,7 +127,7 @@ export default function FAQ() {
   return (
     <section
       ref={sectionRef}
-      className="py-16 md:py-24 px-4"
+      className="py-10 md:py-16 px-4"
       style={{
         background: "linear-gradient(180deg, #0A0A0A 0%, #0D0D0D 100%)",
         borderTop: "1px solid rgba(255,255,255,0.05)",

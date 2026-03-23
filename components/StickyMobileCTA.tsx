@@ -48,7 +48,7 @@ export default function StickyMobileCTA() {
           style={{ fontSize: "1rem", minHeight: "52px" }}
           tabIndex={visible ? 0 : -1}
         >
-          Get Your Free Audit →
+          Get Your FREE Audit →
         </button>
       </div>
     </div>

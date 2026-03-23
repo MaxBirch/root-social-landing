@@ -8,16 +8,16 @@ const rows = [
     others: "Overworked buyers juggling 20+ accounts at once",
   },
   {
-    rootSocial: "Ad creative included as standard - strategy, design, copy, iteration",
-    others: "Creative is extra - pay per asset or go without",
+    rootSocial: "Full campaign management included as standard",
+    others: "Management is basic — extras cost more",
   },
   {
     rootSocial: "Rolling monthly contracts - we earn your business every single month",
     others: "Locked in for 6-12 months regardless of results",
   },
   {
-    rootSocial: "Live AI dashboard - see your results in real time, 24/7",
-    others: "Monthly PDF reports with cherry-picked metrics",
+    rootSocial: "We focus on improving your bottom line profit, taking in the full picture",
+    others: "Focus on vanity metrics like ROAS, not taking in the full picture",
   },
   {
     rootSocial: "£20M+ in tracked revenue generated across client accounts",
@@ -51,7 +51,7 @@ export default function Comparison() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-24 px-4" style={{ backgroundColor: "#F5F0E8" }}>
+    <section ref={sectionRef} className="py-10 md:py-16 px-4" style={{ backgroundColor: "#F5F0E8" }}>
       <div className="max-w-4xl mx-auto comparison-inner reveal">
         {/* Section heading */}
         <div className="text-center mb-12">
@@ -175,7 +175,7 @@ export default function Comparison() {
         {/* Bottom CTA nudge */}
         <div className="text-center mt-10">
           <p style={{ color: "rgba(26,26,26,0.5)", fontSize: "0.9rem", marginBottom: "16px" }}>
-            Experience the difference first-hand - your audit is 100% free
+            Experience the difference first-hand - your audit is 100% FREE
           </p>
           <button
             onClick={() => {
@@ -184,7 +184,7 @@ export default function Comparison() {
             }}
             className="btn-green inline-flex items-center gap-2 rounded-full px-8 py-3.5 text-sm font-bold"
           >
-            Claim My Free Audit →
+            Claim My FREE Audit →
           </button>
         </div>
       </div>

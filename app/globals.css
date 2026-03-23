@@ -231,6 +231,10 @@ input, select, textarea {
   animation-play-state: paused;
 }
 
+.carousel-track:hover .logo-carousel-img {
+  opacity: 0.8;
+}
+
 /* ============================================================
    FAQ ACCORDION
    ============================================================ */

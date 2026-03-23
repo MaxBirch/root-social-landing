@@ -140,7 +140,7 @@ export default function ExitIntent() {
                 Before you go - we&apos;ll show you exactly where your budget is leaking
               </h3>
               <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.5)" }}>
-                Drop your email and get a free personalised breakdown - no call, no pitch, no strings.
+                Drop your email and get a FREE personalised breakdown - no call, no pitch, no strings.
               </p>
             </div>
 

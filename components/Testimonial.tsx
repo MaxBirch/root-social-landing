@@ -50,22 +50,24 @@ export default function Testimonial() {
       { threshold: 0, rootMargin: "100px" }
     );
     observer.observe(el);
-    // Fallback: reveal after short delay in case observer misses
     const fallback = setTimeout(() => wrap?.classList.add("revealed"), 1200);
     return () => { observer.disconnect(); clearTimeout(fallback); };
   }, []);
+
+  const prev = () => setActive((a) => (a === 0 ? testimonials.length - 1 : a - 1));
+  const next = () => setActive((a) => (a === testimonials.length - 1 ? 0 : a + 1));
 
   const t = testimonials[active];
 
   return (
     <section
       ref={sectionRef}
-      className="py-16 md:py-24 px-4"
+      className="py-10 md:py-16 px-4"
       style={{ backgroundColor: "#F5F0E8" }}
     >
       <div className="max-w-2xl mx-auto testimonial-wrap reveal">
         {/* Heading */}
-        <div className="text-center mb-10">
+        <div className="text-center mb-8">
           <span
             className="inline-block text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-5"
             style={{
@@ -87,97 +89,152 @@ export default function Testimonial() {
           </p>
         </div>
 
-        {/* Testimonial card */}
-        <div
-          key={active}
-          className="gradient-border-card p-7 md:p-9"
-          style={{
-            background: "#111111",
-            animation: "stepFadeIn 0.35s ease-out forwards",
-          }}
-        >
-          {/* Stars */}
-          <div className="flex gap-0.5 mb-5">
-            {[...Array(5)].map((_, i) => (
-              <svg key={i} width="18" height="18" viewBox="0 0 24 24" fill="#F59E0B">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-              </svg>
-            ))}
-          </div>
-
-          {/* Big quote */}
-          <div
-            className="font-black mb-3 leading-none select-none"
-            style={{ fontSize: "4rem", lineHeight: 0.8, color: "#2D8B3C", opacity: 0.35 }}
-          >
-            &ldquo;
-          </div>
-
-          {/* Quote */}
-          <p
-            className="leading-relaxed mb-8"
+        {/* Navigation + card row */}
+        <div className="flex items-center gap-3">
+          {/* Left arrow */}
+          <button
+            onClick={prev}
+            aria-label="Previous testimonial"
+            className="shrink-0 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200"
             style={{
-              fontSize: "clamp(1rem, 2vw, 1.12rem)",
-              color: "rgba(255,255,255,0.82)",
-              fontStyle: "italic",
+              background: "rgba(26,26,26,0.12)",
+              border: "1px solid rgba(26,26,26,0.15)",
+              color: "#1A1A1A",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.background = "#2D8B3C";
+              (e.currentTarget as HTMLElement).style.color = "white";
+              (e.currentTarget as HTMLElement).style.borderColor = "#2D8B3C";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.background = "rgba(26,26,26,0.12)";
+              (e.currentTarget as HTMLElement).style.color = "#1A1A1A";
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(26,26,26,0.15)";
             }}
           >
-            {t.quote.split(t.highlight).map((part, i) =>
-              i === 0 ? (
-                part
-              ) : (
-                <>
-                  <strong className="not-italic" style={{ color: "#4EB85E", fontWeight: 800 }}>
-                    {t.highlight}
-                  </strong>
-                  {part}
-                </>
-              )
-            )}
-          </p>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
 
-          {/* Divider */}
+          {/* Testimonial card */}
           <div
-            className="mb-6"
-            style={{ height: "1px", background: "linear-gradient(90deg, rgba(45,139,60,0.4), rgba(255,255,255,0.04))" }}
-          />
-
-          {/* Author */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div
-                className="w-11 h-11 rounded-full flex items-center justify-center font-black text-lg shrink-0"
-                style={{ background: "linear-gradient(135deg, #2D8B3C, #1a6b28)", color: "white" }}
-              >
-                {t.initial}
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h3 className="font-black text-white" style={{ fontSize: "1.02rem" }}>{t.name}</h3>
-                  <div className="w-4 h-4 rounded-full flex items-center justify-center" style={{ background: "#2D8B3C" }}>
-                    <svg width="9" height="9" viewBox="0 0 12 12" fill="none">
-                      <path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                </div>
-                <p className="text-sm font-semibold" style={{ color: "#2D8B3C" }}>{t.role}</p>
-              </div>
+            key={active}
+            className="flex-1 gradient-border-card p-7 md:p-9"
+            style={{
+              background: "#111111",
+              animation: "stepFadeIn 0.35s ease-out forwards",
+            }}
+          >
+            {/* Stars */}
+            <div className="flex gap-0.5 mb-5">
+              {[...Array(5)].map((_, i) => (
+                <svg key={i} width="18" height="18" viewBox="0 0 24 24" fill="#F59E0B">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              ))}
             </div>
-            <span
-              className="text-xs font-semibold px-3 py-1.5 rounded-full self-start sm:self-auto"
+
+            {/* Big quote */}
+            <div
+              className="font-black mb-3 leading-none select-none"
+              style={{ fontSize: "4rem", lineHeight: 0.8, color: "#2D8B3C", opacity: 0.35 }}
+            >
+              &ldquo;
+            </div>
+
+            {/* Quote */}
+            <p
+              className="leading-relaxed mb-8"
               style={{
-                background: "rgba(45,139,60,0.15)",
-                color: "#4EB85E",
-                border: "1px solid rgba(45,139,60,0.25)",
+                fontSize: "clamp(1rem, 2vw, 1.12rem)",
+                color: "rgba(255,255,255,0.82)",
+                fontStyle: "italic",
               }}
             >
-              {t.badge}
-            </span>
+              {t.quote.split(t.highlight).map((part, i) =>
+                i === 0 ? (
+                  part
+                ) : (
+                  <>
+                    <strong className="not-italic" style={{ color: "#4EB85E", fontWeight: 800 }}>
+                      {t.highlight}
+                    </strong>
+                    {part}
+                  </>
+                )
+              )}
+            </p>
+
+            {/* Divider */}
+            <div
+              className="mb-6"
+              style={{ height: "1px", background: "linear-gradient(90deg, rgba(45,139,60,0.4), rgba(255,255,255,0.04))" }}
+            />
+
+            {/* Author */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div
+                  className="w-11 h-11 rounded-full flex items-center justify-center font-black text-lg shrink-0"
+                  style={{ background: "linear-gradient(135deg, #2D8B3C, #1a6b28)", color: "white" }}
+                >
+                  {t.initial}
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-black text-white" style={{ fontSize: "1.02rem" }}>{t.name}</h3>
+                    <div className="w-4 h-4 rounded-full flex items-center justify-center" style={{ background: "#2D8B3C" }}>
+                      <svg width="9" height="9" viewBox="0 0 12 12" fill="none">
+                        <path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <p className="text-sm font-semibold" style={{ color: "#2D8B3C" }}>{t.role}</p>
+                </div>
+              </div>
+              <span
+                className="text-xs font-semibold px-3 py-1.5 rounded-full self-start sm:self-auto"
+                style={{
+                  background: "rgba(45,139,60,0.15)",
+                  color: "#4EB85E",
+                  border: "1px solid rgba(45,139,60,0.25)",
+                }}
+              >
+                {t.badge}
+              </span>
+            </div>
           </div>
+
+          {/* Right arrow */}
+          <button
+            onClick={next}
+            aria-label="Next testimonial"
+            className="shrink-0 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-200"
+            style={{
+              background: "rgba(26,26,26,0.12)",
+              border: "1px solid rgba(26,26,26,0.15)",
+              color: "#1A1A1A",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.background = "#2D8B3C";
+              (e.currentTarget as HTMLElement).style.color = "white";
+              (e.currentTarget as HTMLElement).style.borderColor = "#2D8B3C";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.background = "rgba(26,26,26,0.12)";
+              (e.currentTarget as HTMLElement).style.color = "#1A1A1A";
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(26,26,26,0.15)";
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 18l6-6-6-6"/>
+            </svg>
+          </button>
         </div>
 
-        {/* Testimonial switcher dots */}
-        <div className="flex justify-center gap-2.5 mt-6">
+        {/* Dots */}
+        <div className="flex justify-center gap-2.5 mt-5">
           {testimonials.map((_, i) => (
             <button
               key={i}
@@ -195,8 +252,6 @@ export default function Testimonial() {
             />
           ))}
         </div>
-
-
       </div>
     </section>
   );

@@ -22,14 +22,14 @@ export default function CalendlyEmbed({ firstName, email }: CalendlyEmbedProps) 
     const handleMessage = async (e: MessageEvent) => {
       if (e.data?.event === "calendly.event_scheduled") {
         const eventId = crypto.randomUUID();
-        
+
         // Track pixel event
         trackPixelEvent("Schedule", {
           content_name: "Audit Call Booked",
           content_category: "Lead",
           eventID: eventId,
         });
-        
+
         // Send CAPI event (most valuable conversion)
         try {
           await fetch("/api/meta-capi", {
@@ -46,13 +46,32 @@ export default function CalendlyEmbed({ firstName, email }: CalendlyEmbedProps) 
               customData: {
                 content_name: "Audit Call Booked",
                 content_category: "Lead",
-                value: 500, // High value conversion
+                value: 500,
                 currency: "GBP",
               },
             }),
           });
         } catch (capiError) {
           console.error("CAPI error for Schedule event:", capiError);
+        }
+
+        // Send confirmation email + lead notification via submit-lead API
+        try {
+          await fetch("/api/submit-lead", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              firstName,
+              email,
+              qualified: true,
+              calendlyBooked: true,
+              source: "calendly-booking",
+              timestamp: new Date().toISOString(),
+              eventId,
+            }),
+          });
+        } catch (submitError) {
+          console.error("Submit lead (calendly) error:", submitError);
         }
       }
     };
@@ -63,7 +82,7 @@ export default function CalendlyEmbed({ firstName, email }: CalendlyEmbedProps) 
       window.removeEventListener("message", handleMessage);
       document.head.removeChild(script);
     };
-  }, []);
+  }, [firstName, email]);
 
   const calendlyUrl = `${CALENDLY_URL}?name=${encodeURIComponent(firstName)}&email=${encodeURIComponent(email)}`;
 
@@ -79,7 +98,24 @@ export default function CalendlyEmbed({ firstName, email }: CalendlyEmbedProps) 
           You&apos;re a great fit, {firstName}!
         </h3>
         <p className="text-white/60 text-base">
-          Pick a time that works for your free 30-minute audit call.
+          Pick a time that works for your FREE 30-minute audit call.
+        </p>
+      </div>
+
+      {/* 3-day minimum notice */}
+      <div
+        className="flex items-start gap-2.5 p-3.5 rounded-xl mb-4"
+        style={{
+          background: "rgba(45,139,60,0.08)",
+          border: "1px solid rgba(45,139,60,0.2)",
+        }}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4EB85E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 mt-0.5">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 8v4M12 16h.01"/>
+        </svg>
+        <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.7)" }}>
+          <strong className="text-white">Please select a date at least 3 working days from today.</strong> This gives us time to thoroughly review your ad account before we speak.
         </p>
       </div>
 
@@ -93,7 +129,7 @@ export default function CalendlyEmbed({ firstName, email }: CalendlyEmbedProps) 
       {/* Below calendly copy */}
       <div className="mt-6 bg-white/5 border border-white/10 rounded-xl p-4">
         <p className="text-white/70 text-sm text-center leading-relaxed">
-          We&apos;ll review your ad account <strong className="text-white">before</strong> we speak and show you exactly where your budget is leaking and what we&apos;d change in the first 30 days.
+          We&apos;ll review your ad account <strong className="text-white">before</strong> we speak and come prepared with specific recommendations.
         </p>
       </div>
     </div>

@@ -4,10 +4,10 @@ import { randomUUID } from "crypto";
 function extractCookiesFromHeaders(request: NextRequest): { fbp?: string; fbc?: string } {
   const cookies = request.headers.get("cookie");
   if (!cookies) return {};
-  
+
   const fbp = cookies.match(/_fbp=([^;]+)/)?.[1];
   const fbc = cookies.match(/_fbc=([^;]+)/)?.[1];
-  
+
   return { fbp, fbc };
 }
 
@@ -15,6 +15,66 @@ function getClientIp(request: NextRequest): string | undefined {
   return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
          request.headers.get("x-real-ip") ||
          undefined;
+}
+
+async function sendDiscordNotification(leadData: Record<string, unknown>) {
+  const DISCORD_CHANNEL_ID = "1485604130734080084";
+  const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
+
+  if (!DISCORD_BOT_TOKEN) {
+    console.warn("DISCORD_BOT_TOKEN not set — skipping Discord notification");
+    return;
+  }
+
+  const {
+    firstName,
+    email,
+    website,
+    adSpend,
+    challenge,
+    qualified,
+    accessGranted,
+    additionalNotes,
+    calendlyBooked,
+  } = leadData as {
+    firstName?: string;
+    email?: string;
+    website?: string;
+    adSpend?: string;
+    challenge?: string;
+    qualified?: boolean;
+    accessGranted?: boolean;
+    additionalNotes?: string;
+    calendlyBooked?: boolean;
+  };
+
+  const qualTag = qualified ? "✅ QUALIFIED" : "⚠️ Disqualified";
+  const bookedTag = calendlyBooked ? "\n📅 **Calendly booking confirmed**" : "";
+  const accessTag = accessGranted ? "✅ Yes" : "❌ Not yet";
+
+  const content = [
+    `🚨 **NEW LEAD — Landing Page**`,
+    `${qualTag}${bookedTag}`,
+    ``,
+    `👤 **Name:** ${firstName || "N/A"}`,
+    `📧 **Email:** ${email || "N/A"}`,
+    `🌐 **Website:** ${website || "N/A"}`,
+    `💰 **Ad Spend:** ${adSpend || "N/A"}`,
+    `🎯 **Challenge:** ${challenge || "N/A"}`,
+    `🔑 **Ad Account Access Granted:** ${accessTag}`,
+    additionalNotes ? `📝 **Additional Notes:** ${additionalNotes}` : null,
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  await fetch(`https://discord.com/api/v10/channels/${DISCORD_CHANNEL_ID}/messages`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ content }),
+  });
 }
 
 export async function POST(request: NextRequest) {
@@ -30,6 +90,9 @@ export async function POST(request: NextRequest) {
       source,
       timestamp,
       eventId: providedEventId,
+      accessGranted,
+      additionalNotes,
+      calendlyBooked,
     } = body;
 
     // Basic validation
@@ -37,7 +100,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // Generate event ID for deduplication between pixel and CAPI
     const eventId = providedEventId || randomUUID();
 
     const leadData = {
@@ -47,9 +109,11 @@ export async function POST(request: NextRequest) {
       adSpend,
       challenge,
       qualified: Boolean(qualified),
+      accessGranted: Boolean(accessGranted),
+      additionalNotes: additionalNotes || "",
+      calendlyBooked: Boolean(calendlyBooked),
       timestamp: timestamp || new Date().toISOString(),
       source: source || "meta-ads",
-      calendlyBooked: false,
       eventId,
     };
 
@@ -72,11 +136,10 @@ export async function POST(request: NextRequest) {
       }
     } catch (kvError) {
       console.error("KV storage error:", kvError);
-      // Don't fail the request if KV is unavailable
     }
 
     // Send Meta CAPI event if qualified lead
-    if (qualified) {
+    if (qualified && !calendlyBooked) {
       try {
         const { fbp, fbc } = extractCookiesFromHeaders(request);
         const clientIp = getClientIp(request);
@@ -100,44 +163,93 @@ export async function POST(request: NextRequest) {
             customData: {
               content_name: "Audit Form Submission",
               content_category: "Lead Generation",
-              value: 100, // Estimated lead value
+              value: 100,
               currency: "GBP",
             },
           }),
         });
       } catch (capiError) {
         console.error("CAPI error (non-blocking):", capiError);
-        // Don't fail the request if CAPI fails
       }
     }
 
-    // Send to webhook if configured
+    // Send Discord notification to #landing-leads
     try {
-      const webhookUrl = process.env.LANDING_WEBHOOK_URL;
-      if (webhookUrl) {
-        await fetch(webhookUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ...leadData,
-            kvKey: key,
-          }),
-        });
-      }
-    } catch (webhookError) {
-      console.error("Webhook error:", webhookError);
-      // Don't fail the request if webhook is unavailable
+      await sendDiscordNotification(leadData);
+    } catch (discordError) {
+      console.error("Discord notification error:", discordError);
     }
 
-    // Send notification via proactive API
+    // Send confirmation email if Calendly booking confirmed
+    if (calendlyBooked) {
+      try {
+        const webhookUrl = process.env.LANDING_WEBHOOK_URL;
+        if (webhookUrl) {
+          await fetch(webhookUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              type: "confirmation_email",
+              to: email,
+              subject: "Your FREE Root Social audit is confirmed",
+              body: [
+                `Hi ${firstName},`,
+                ``,
+                `Thank you for booking your FREE audit call with Root Social!`,
+                ``,
+                `We're looking forward to speaking with you. Before we meet, a quick reminder:`,
+                ``,
+                `🔑 Please make sure you've granted view-only access to your Meta ad account for rootsocialgeneral@gmail.com — this allows us to review your account before the call so we come prepared with specific recommendations.`,
+                ``,
+                `What to expect:`,
+                `• We'll review your ad account thoroughly before we speak`,
+                `• We'll come prepared with specific, actionable recommendations`,
+                `• You'll walk away knowing exactly what to change`,
+                ``,
+                `If you have any questions before the call, reply to this email.`,
+                ``,
+                `Looking forward to it,`,
+                `Max & the Root Social team`,
+              ].join("\n"),
+              ...leadData,
+              kvKey: key,
+            }),
+          });
+        }
+      } catch (emailError) {
+        console.error("Confirmation email error:", emailError);
+      }
+    }
+
+    // Send to webhook if configured (standard lead)
+    if (!calendlyBooked) {
+      try {
+        const webhookUrl = process.env.LANDING_WEBHOOK_URL;
+        if (webhookUrl) {
+          await fetch(webhookUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              ...leadData,
+              kvKey: key,
+            }),
+          });
+        }
+      } catch (webhookError) {
+        console.error("Webhook error:", webhookError);
+      }
+    }
+
+    // Send notification via proactive API (MC)
     try {
-      const qualTag = qualified ? "✅ QUALIFIED" : "⚠️ Disqualified";
-      const msg = `🚨 NEW LEAD from landing page!\n${qualTag}\n👤 ${firstName}\n📧 ${email}\n🌐 ${website || 'N/A'}\n💰 Ad spend: ${adSpend || 'N/A'}\n🎯 Challenge: ${challenge || 'N/A'}`;
+      const qualTag = qualified ? "QUALIFIED" : "Disqualified";
+      const bookedNote = calendlyBooked ? " | Calendly BOOKED" : "";
+      const msg = `NEW LEAD from landing page! ${qualTag}${bookedNote} - ${firstName} (${email}) - Spend: ${adSpend || "N/A"} - Challenge: ${challenge || "N/A"}`;
       await fetch("https://root-social-os.vercel.app/api/proactive", {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
-          "x-mc-secret": "mc-proactive-2026"
+          "x-mc-secret": "mc-proactive-2026",
         },
         body: JSON.stringify({
           message: msg,
@@ -147,7 +259,6 @@ export async function POST(request: NextRequest) {
       });
     } catch (notifyError) {
       console.error("Notification error:", notifyError);
-      // Don't fail the request if notification fails
     }
 
     return NextResponse.json({ success: true, key, eventId });

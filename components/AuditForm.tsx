@@ -11,6 +11,8 @@ interface FormData {
   adSpend: string;
   challenge: string;
   challengeOther: string;
+  accessGranted: boolean;
+  additionalNotes: string;
 }
 
 const AD_SPEND_OPTIONS = [
@@ -24,13 +26,14 @@ const AD_SPEND_OPTIONS = [
 const CHALLENGE_OPTIONS = [
   { value: "roas", label: "ROAS isn't where it needs to be" },
   { value: "scaling", label: "Scaling spend without killing performance" },
-  { value: "not-enough-creative", label: "Not enough creative being produced" },
   { value: "poor-comms", label: "Poor communication from current agency" },
   { value: "getting-started", label: "Just getting started with paid social" },
   { value: "other", label: "Other" },
 ];
 
 const DISQUALIFYING_SPENDS = ["less-than-1k", "not-running"];
+
+const TOTAL_STEPS = 5;
 
 export default function AuditForm() {
   const [step, setStep] = useState(1);
@@ -41,8 +44,10 @@ export default function AuditForm() {
     adSpend: "",
     challenge: "",
     challengeOther: "",
+    accessGranted: false,
+    additionalNotes: "",
   });
-  const [errors, setErrors] = useState<Partial<FormData>>({});
+  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [qualified, setQualified] = useState(false);
@@ -53,7 +58,6 @@ export default function AuditForm() {
   // Track ViewContent when form section scrolls into view
   useEffect(() => {
     if (viewContentTracked) return;
-    
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !viewContentTracked) {
@@ -66,15 +70,10 @@ export default function AuditForm() {
       },
       { threshold: 0.3 }
     );
-    
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-    
+    if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
   }, [viewContentTracked]);
 
-  // Track InitiateCheckout when user starts filling Step 1
   const trackInitiateCheckout = () => {
     if (!initiateCheckoutTracked) {
       trackPixelEvent("InitiateCheckout", {
@@ -90,7 +89,7 @@ export default function AuditForm() {
   };
 
   const validateStep1 = () => {
-    const errs: Partial<FormData> = {};
+    const errs: Partial<Record<keyof FormData, string>> = {};
     if (!formData.firstName.trim()) errs.firstName = "Please enter your first name";
     if (!formData.email.trim()) errs.email = "Please enter your email";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) errs.email = "Please enter a valid email";
@@ -99,7 +98,7 @@ export default function AuditForm() {
   };
 
   const validateStep2 = () => {
-    const errs: Partial<FormData> = {};
+    const errs: Partial<Record<keyof FormData, string>> = {};
     if (!formData.website.trim()) errs.website = "Please enter your website URL";
     if (!formData.adSpend) errs.adSpend = "Please select your monthly ad spend";
     setErrors(errs);
@@ -107,8 +106,15 @@ export default function AuditForm() {
   };
 
   const validateStep3 = () => {
-    const errs: Partial<FormData> = {};
+    const errs: Partial<Record<keyof FormData, string>> = {};
     if (!formData.challenge) errs.challenge = "Please select your main challenge";
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
+  const validateStep4 = () => {
+    const errs: Partial<Record<keyof FormData, string>> = {};
+    if (!formData.accessGranted) errs.accessGranted = "Please confirm you've granted view-only access to proceed";
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -117,11 +123,11 @@ export default function AuditForm() {
     let valid = false;
     if (step === 1) valid = validateStep1();
     else if (step === 2) valid = validateStep2();
+    else if (step === 3) valid = validateStep3();
+    else if (step === 4) valid = validateStep4();
     if (valid) {
       setStep(step + 1);
       scrollToTop();
-      
-      // Track form progression
       trackPixelEvent("CustomEvent", {
         content_name: `Audit Form Step ${step + 1}`,
         content_category: "Form Progression",
@@ -130,14 +136,11 @@ export default function AuditForm() {
   };
 
   const handleSubmit = async () => {
-    if (!validateStep3()) return;
     setSubmitting(true);
 
     const isQualified = !DISQUALIFYING_SPENDS.includes(formData.adSpend);
-
-    // Generate event ID for deduplication between pixel and CAPI
     const eventId = crypto.randomUUID();
-    
+
     try {
       const response = await fetch("/api/submit-lead", {
         method: "POST",
@@ -148,7 +151,7 @@ export default function AuditForm() {
           qualified: isQualified,
           source: "meta-ads",
           timestamp: new Date().toISOString(),
-          eventId, // Pass event ID for deduplication
+          eventId,
         }),
       });
 
@@ -159,12 +162,11 @@ export default function AuditForm() {
       console.error("Submit error:", err);
     }
 
-    // Track pixel event with event ID for deduplication
     if (isQualified) {
       trackPixelEvent("Lead", {
         content_name: "Audit Form Submission",
         content_category: "Lead Generation",
-        eventID: eventId, // For deduplication with CAPI
+        eventID: eventId,
       });
     }
 
@@ -174,11 +176,22 @@ export default function AuditForm() {
     scrollToTop();
   };
 
+  const stepLabel = () => {
+    switch (step) {
+      case 1: return "About you";
+      case 2: return "Your ad account";
+      case 3: return "Your biggest challenge";
+      case 4: return "Grant account access";
+      case 5: return "Anything else?";
+      default: return "";
+    }
+  };
+
   return (
     <section
       id="audit-form"
       ref={sectionRef}
-      className="py-16 md:py-24 px-4 scroll-mt-0"
+      className="py-10 md:py-16 px-4 scroll-mt-0"
       style={{
         background: "linear-gradient(180deg, #0A0A0A 0%, #0D0D0D 100%)",
       }}
@@ -187,7 +200,7 @@ export default function AuditForm() {
         {!submitted ? (
           <>
             {/* Header */}
-            <div className="text-center mb-10">
+            <div className="text-center mb-8">
               <span
                 className="inline-block text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-5"
                 style={{
@@ -196,16 +209,16 @@ export default function AuditForm() {
                   border: "1px solid rgba(45,139,60,0.3)",
                 }}
               >
-                Free Audit - No Obligation
+                FREE Audit - No Obligation
               </span>
               <h2
                 className="font-black leading-tight text-white mb-3"
                 style={{ fontSize: "clamp(1.7rem, 4vw, 2.5rem)" }}
               >
-                Claim your free ad account audit
+                Claim your FREE ad account audit
               </h2>
               <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.95rem" }}>
-                Takes 2 minutes to fill in. We&apos;ll review your account <strong className="text-white/80">before</strong> your free 30-minute audit call.
+                Takes 2 minutes to fill in. We&apos;ll review your account <strong className="text-white/80">before</strong> your FREE 30-minute audit call.
               </p>
 
               {/* Scarcity nudge */}
@@ -226,7 +239,7 @@ export default function AuditForm() {
             {/* Progress bar */}
             <div className="mb-2">
               <div className="flex gap-1.5 mb-2">
-                {[1, 2, 3].map((s) => (
+                {Array.from({ length: TOTAL_STEPS }, (_, i) => i + 1).map((s) => (
                   <div
                     key={s}
                     className="flex-1 h-1.5 rounded-full transition-all duration-500"
@@ -239,14 +252,14 @@ export default function AuditForm() {
                 ))}
               </div>
               <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.55)" }}>
-                Step {step} of 3 - {step === 1 ? "About you" : step === 2 ? "Your ad account" : "Your biggest challenge"}
+                Step {step} of {TOTAL_STEPS} — {stepLabel()}
               </p>
             </div>
 
             {/* Step container */}
             <div
               key={step}
-              className="step-enter mt-8"
+              className="step-enter mt-6"
               style={{
                 background: "#161616",
                 border: "1px solid rgba(255,255,255,0.08)",
@@ -254,7 +267,7 @@ export default function AuditForm() {
                 padding: "clamp(1.5rem, 4vw, 2.25rem)",
               }}
             >
-              {/* Step 1 */}
+              {/* ─── Step 1: Name + Email ─── */}
               {step === 1 && (
                 <div className="space-y-5">
                   <div>
@@ -318,20 +331,17 @@ export default function AuditForm() {
                     {errors.email && <p className="text-red-400 text-xs mt-1.5">{errors.email}</p>}
                   </div>
 
-                  <button
-                    onClick={handleNext}
-                    className="btn-green w-full rounded-xl py-4 text-base mt-1 min-h-[56px]"
-                  >
-                    Continue - Step 2 of 3 →
+                  <button onClick={handleNext} className="btn-green w-full rounded-xl py-4 text-base mt-1 min-h-[56px]">
+                    Continue →
                   </button>
 
                   <p className="text-center" style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.72rem" }}>
-                    No spam. No cold calls. Just your free audit.
+                    No spam. No cold calls. Just your FREE audit.
                   </p>
                 </div>
               )}
 
-              {/* Step 2 */}
+              {/* ─── Step 2: Website + Ad Spend ─── */}
               {step === 2 && (
                 <div className="space-y-6">
                   <div>
@@ -408,12 +418,12 @@ export default function AuditForm() {
                   </div>
 
                   <button onClick={handleNext} className="btn-green w-full rounded-xl py-4 text-base min-h-[56px]">
-                    Continue - Step 3 of 3 →
+                    Continue →
                   </button>
                 </div>
               )}
 
-              {/* Step 3 */}
+              {/* ─── Step 3: Challenge ─── */}
               {step === 3 && (
                 <div className="space-y-6">
                   <div>
@@ -487,6 +497,133 @@ export default function AuditForm() {
                     </div>
                   )}
 
+                  <button onClick={handleNext} className="btn-green w-full rounded-xl text-base min-h-[56px]" style={{ padding: "16px 24px" }}>
+                    Continue →
+                  </button>
+                </div>
+              )}
+
+              {/* ─── Step 4: Ad Account Access ─── */}
+              {step === 4 && (
+                <div className="space-y-5">
+                  <div>
+                    <h3 className="font-black text-white text-lg mb-1">Grant us view-only access to your ad account</h3>
+                    <p className="text-sm mb-5" style={{ color: "rgba(255,255,255,0.6)" }}>
+                      To carry out your FREE audit, we need view-only access to your Meta ad account. Here&apos;s how:
+                    </p>
+
+                    <ol className="space-y-3 mb-5">
+                      {[
+                        <>Go to <strong className="text-white">Meta Business Suite</strong> → Settings → People</>,
+                        <>Click <strong className="text-white">"Add People"</strong></>,
+                        <>Enter: <strong className="text-white" style={{ color: "#4EB85E" }}>rootsocialgeneral@gmail.com</strong></>,
+                        <>Select <strong className="text-white">"Ad Account"</strong> and assign <strong className="text-white">"View Performance"</strong> access only</>,
+                        <>Click <strong className="text-white">"Send Invitation"</strong></>,
+                      ].map((step, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <span
+                            className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-black"
+                            style={{ background: "rgba(45,139,60,0.2)", color: "#4EB85E" }}
+                          >
+                            {i + 1}
+                          </span>
+                          <span className="text-sm leading-snug pt-0.5" style={{ color: "rgba(255,255,255,0.75)" }}>
+                            {step}
+                          </span>
+                        </li>
+                      ))}
+                    </ol>
+
+                    {/* Note */}
+                    <div
+                      className="flex items-start gap-2.5 p-3.5 rounded-xl mb-5"
+                      style={{
+                        background: "rgba(45,139,60,0.08)",
+                        border: "1px solid rgba(45,139,60,0.2)",
+                      }}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4EB85E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 mt-0.5">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                      </svg>
+                      <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.65)" }}>
+                        We only need <strong className="text-white">view-only access</strong>. We will never make changes to your account without your permission.
+                      </p>
+                    </div>
+
+                    {/* Confirmation checkbox */}
+                    <label
+                      className="flex items-start gap-3 cursor-pointer p-4 rounded-xl"
+                      style={{
+                        border: `1.5px solid ${errors.accessGranted ? "#EF4444" : formData.accessGranted ? "#2D8B3C" : "rgba(255,255,255,0.08)"}`,
+                        background: formData.accessGranted ? "rgba(45,139,60,0.08)" : "rgba(255,255,255,0.02)",
+                        transition: "all 0.2s ease",
+                      }}
+                    >
+                      <div
+                        className="shrink-0 w-5 h-5 rounded flex items-center justify-center mt-0.5"
+                        style={{
+                          background: formData.accessGranted ? "#2D8B3C" : "transparent",
+                          border: `2px solid ${formData.accessGranted ? "#2D8B3C" : "rgba(255,255,255,0.3)"}`,
+                          transition: "all 0.2s ease",
+                        }}
+                      >
+                        {formData.accessGranted && (
+                          <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                            <path d="M2 6l3 3 5-5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        )}
+                      </div>
+                      <span className="text-sm leading-snug" style={{ color: "rgba(255,255,255,0.8)" }}>
+                        I&apos;ve granted view-only access to <strong className="text-white">rootsocialgeneral@gmail.com</strong>
+                      </span>
+                      <input
+                        type="checkbox"
+                        checked={formData.accessGranted}
+                        onChange={(e) => setFormData({ ...formData, accessGranted: e.target.checked })}
+                        className="sr-only"
+                      />
+                    </label>
+                    {errors.accessGranted && <p className="text-red-400 text-xs mt-1.5">{errors.accessGranted}</p>}
+                  </div>
+
+                  <button onClick={handleNext} className="btn-green w-full rounded-xl py-4 text-base min-h-[56px]">
+                    Continue →
+                  </button>
+                </div>
+              )}
+
+              {/* ─── Step 5: Anything else? (Submit) ─── */}
+              {step === 5 && (
+                <div className="space-y-5">
+                  <div>
+                    <h3 className="font-black text-white text-lg mb-1">Anything else we should know?</h3>
+                    <label className="block text-sm mb-3" style={{ color: "rgba(255,255,255,0.6)" }}>
+                      Optional — tell us about your goals, challenges, or anything that would help us prepare your audit
+                    </label>
+                    <textarea
+                      value={formData.additionalNotes}
+                      onChange={(e) => setFormData({ ...formData, additionalNotes: e.target.value })}
+                      placeholder="e.g. We're launching a new product line next month, and want to scale quickly..."
+                      rows={5}
+                      className="w-full rounded-xl px-4 py-4 text-white placeholder-white/20 resize-none"
+                      style={{
+                        background: "rgba(255,255,255,0.04)",
+                        border: "1.5px solid rgba(255,255,255,0.1)",
+                        fontSize: "16px",
+                        outline: "none",
+                        transition: "border-color 0.2s ease, box-shadow 0.2s ease",
+                      }}
+                      onFocus={(e) => {
+                        e.currentTarget.style.borderColor = "#2D8B3C";
+                        e.currentTarget.style.boxShadow = "0 0 0 3px rgba(45,139,60,0.15)";
+                      }}
+                      onBlur={(e) => {
+                        e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
+                        e.currentTarget.style.boxShadow = "none";
+                      }}
+                    />
+                  </div>
+
                   <button
                     onClick={handleSubmit}
                     disabled={submitting}
@@ -498,10 +635,10 @@ export default function AuditForm() {
                         <svg className="animate-spin" width="18" height="18" viewBox="0 0 24 24" fill="none">
                           <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="60" strokeDashoffset="15" strokeLinecap="round"/>
                         </svg>
-                        Booking your audit...
+                        Submitting...
                       </span>
                     ) : (
-                      "Claim My Free Audit →"
+                      "Submit & Book My Call →"
                     )}
                   </button>
 
@@ -511,7 +648,7 @@ export default function AuditForm() {
                       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2D8B3C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                       </svg>
-                      <span style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.72rem" }}>100% free</span>
+                      <span style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.72rem" }}>100% FREE</span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2D8B3C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -552,7 +689,7 @@ export default function AuditForm() {
               Our audits are best suited for brands currently spending £1,000+/month on ads. We want to make sure we can deliver real value.
             </p>
             <p className="leading-relaxed max-w-sm mx-auto mt-3" style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.95rem" }}>
-              Follow us for free paid social tips while you scale:
+              Follow us for FREE paid social tips while you scale:
             </p>
             <p className="font-bold text-lg mt-4" style={{ color: "#2D8B3C" }}>@root_social</p>
             <p className="mt-6" style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.8rem" }}>

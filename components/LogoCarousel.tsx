@@ -69,12 +69,14 @@ export default function LogoCarousel() {
               <img
                 src={logo.src}
                 alt={logo.alt}
+                className="logo-carousel-img"
                 style={{
                   height: "36px",
                   width: "auto",
                   objectFit: "contain",
-                  opacity: 0.55,
+                  opacity: 0.6,
                   filter: "brightness(0) invert(1)",
+                  transition: "opacity 0.2s ease",
                 }}
               />
             </div>

@@ -62,7 +62,7 @@ export default function VideoSection() {
   return (
     <section
       ref={sectionRef}
-      className="py-14 md:py-20 px-4"
+      className="py-10 md:py-14 px-4"
       style={{
         background: "linear-gradient(180deg, #0A0A0A 0%, #0F0F0F 100%)",
       }}
@@ -196,7 +196,7 @@ export default function VideoSection() {
                 </svg>
               </div>
               <p className="font-bold" style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.9rem" }}>
-                See exactly what&apos;s in your free audit
+                See exactly what&apos;s in your FREE audit
               </p>
               <p className="mt-1" style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.78rem" }}>
                 A 90-second walkthrough from Max, founder of Root Social

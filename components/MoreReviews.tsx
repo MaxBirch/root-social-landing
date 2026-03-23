@@ -53,7 +53,7 @@ export default function MoreReviews() {
   return (
     <section
       ref={sectionRef}
-      className="py-16 md:py-20 px-4"
+      className="py-10 md:py-14 px-4"
       style={{ backgroundColor: "#F5F0E8" }}
     >
       <div className="max-w-4xl mx-auto">
