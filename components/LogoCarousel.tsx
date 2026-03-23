@@ -1,15 +1,15 @@
 "use client";
 
 const logos = [
-  { src: "/logos/hades-agency.png", alt: "Hades Agency" },
-  { src: "/logos/phantom-jewels.jpg", alt: "Phantom Jewels" },
-  { src: "/logos/spectra.png", alt: "Spectra" },
-  { src: "/logos/apex.png", alt: "Apex" },
-  { src: "/logos/body-boom.png", alt: "Body Boom" },
-  { src: "/logos/pumpables.png", alt: "Pumpables" },
-  { src: "/logos/dopeboykits.webp", alt: "Dope Boy Kits" },
-  { src: "/logos/wilsons.webp", alt: "Wilsons" },
-  { src: "/logos/nitro-co.avif", alt: "Nitro Co" },
+  { src: "/logos/hades-agency.png", alt: "Hades Agency", darkBg: true },
+  { src: "/logos/phantom-jewels.jpg", alt: "Phantom Jewels", darkBg: false },
+  { src: "/logos/spectra.png", alt: "Spectra", darkBg: false },
+  { src: "/logos/apex.png", alt: "Apex", darkBg: false },
+  { src: "/logos/body-boom.png", alt: "Body Boom", darkBg: true },
+  { src: "/logos/pumpables.png", alt: "Pumpables", darkBg: true },
+  { src: "/logos/dopeboykits.webp", alt: "Dope Boy Kits", darkBg: false },
+  { src: "/logos/wilsons.webp", alt: "Wilsons", darkBg: true },
+  { src: "/logos/nitro-co.avif", alt: "Nitro Co", darkBg: false },
 ];
 
 export default function LogoCarousel() {
@@ -75,8 +75,8 @@ export default function LogoCarousel() {
                   width: "auto",
                   maxWidth: "160px",
                   objectFit: "contain",
-                  opacity: 0.65,
-                  filter: "brightness(0) invert(1)",
+                  opacity: logo.darkBg ? 0.85 : 0.7,
+                  filter: logo.darkBg ? "grayscale(1) brightness(1.2)" : "brightness(0) invert(1)",
                   transition: "opacity 0.2s ease",
                 }}
               />
