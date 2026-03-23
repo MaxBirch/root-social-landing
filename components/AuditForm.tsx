@@ -252,7 +252,7 @@ export default function AuditForm() {
                 ))}
               </div>
               <p className="text-center text-xs" style={{ color: "rgba(255,255,255,0.55)" }}>
-                Step {step} of {TOTAL_STEPS} — {stepLabel()}
+                Step {step} of {TOTAL_STEPS}  -  {stepLabel()}
               </p>
             </div>
 
@@ -598,7 +598,7 @@ export default function AuditForm() {
                   <div>
                     <h3 className="font-black text-white text-lg mb-1">Anything else we should know?</h3>
                     <label className="block text-sm mb-3" style={{ color: "rgba(255,255,255,0.6)" }}>
-                      Optional — tell us about your goals, challenges, or anything that would help us prepare your audit
+                      Optional  -  tell us about your goals, challenges, or anything that would help us prepare your audit
                     </label>
                     <textarea
                       value={formData.additionalNotes}

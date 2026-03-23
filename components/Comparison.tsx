@@ -9,7 +9,7 @@ const rows = [
   },
   {
     rootSocial: "Full campaign management included as standard",
-    others: "Management is basic — extras cost more",
+    others: "Management is basic  -  extras cost more",
   },
   {
     rootSocial: "Rolling monthly contracts - we earn your business every single month",

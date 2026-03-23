@@ -22,7 +22,7 @@ async function sendDiscordNotification(leadData: Record<string, unknown>) {
   const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
 
   if (!DISCORD_BOT_TOKEN) {
-    console.warn("DISCORD_BOT_TOKEN not set — skipping Discord notification");
+    console.warn("DISCORD_BOT_TOKEN not set  -  skipping Discord notification");
     return;
   }
 
@@ -53,7 +53,7 @@ async function sendDiscordNotification(leadData: Record<string, unknown>) {
   const accessTag = accessGranted ? "✅ Yes" : "❌ Not yet";
 
   const content = [
-    `🚨 **NEW LEAD — Landing Page**`,
+    `🚨 **NEW LEAD  -  Landing Page**`,
     `${qualTag}${bookedTag}`,
     ``,
     `👤 **Name:** ${firstName || "N/A"}`,
@@ -199,7 +199,7 @@ export async function POST(request: NextRequest) {
                 ``,
                 `We're looking forward to speaking with you. Before we meet, a quick reminder:`,
                 ``,
-                `🔑 Please make sure you've granted view-only access to your Meta ad account for rootsocialgeneral@gmail.com — this allows us to review your account before the call so we come prepared with specific recommendations.`,
+                `🔑 Please make sure you've granted view-only access to your Meta ad account for rootsocialgeneral@gmail.com  -  this allows us to review your account before the call so we come prepared with specific recommendations.`,
                 ``,
                 `What to expect:`,
                 `• We'll review your ad account thoroughly before we speak`,

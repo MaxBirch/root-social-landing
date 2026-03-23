@@ -33,11 +33,11 @@ export default function PrivacyPolicy() {
             <h2 className="text-white font-bold text-lg mb-3">2. What Data We Collect</h2>
             <p>When you submit our free ad account audit request form, we collect:</p>
             <ul className="mt-3 ml-5 space-y-1.5 list-disc" style={{ color: "rgba(255,255,255,0.65)" }}>
-              <li><strong className="text-white/80">First name</strong> — to personalise our communication with you</li>
-              <li><strong className="text-white/80">Email address</strong> — to send your audit results and schedule a call</li>
-              <li><strong className="text-white/80">Website URL</strong> — so we can review your business before the audit</li>
-              <li><strong className="text-white/80">Monthly ad spend range</strong> — to confirm we can deliver value at your budget level</li>
-              <li><strong className="text-white/80">Your primary paid social challenge</strong> — to tailor the audit to your situation</li>
+              <li><strong className="text-white/80">First name</strong>  -  to personalise our communication with you</li>
+              <li><strong className="text-white/80">Email address</strong>  -  to send your audit results and schedule a call</li>
+              <li><strong className="text-white/80">Website URL</strong>  -  so we can review your business before the audit</li>
+              <li><strong className="text-white/80">Monthly ad spend range</strong>  -  to confirm we can deliver value at your budget level</li>
+              <li><strong className="text-white/80">Your primary paid social challenge</strong>  -  to tailor the audit to your situation</li>
             </ul>
             <p className="mt-3">
               We do not collect sensitive personal data (e.g. payment information, health data, or government identifiers) through this website.
@@ -107,13 +107,13 @@ export default function PrivacyPolicy() {
             <h2 className="text-white font-bold text-lg mb-3">6. Your GDPR Rights</h2>
             <p>Under UK GDPR, you have the right to:</p>
             <ul className="mt-3 ml-5 space-y-1.5 list-disc" style={{ color: "rgba(255,255,255,0.65)" }}>
-              <li><strong className="text-white/80">Access</strong> — request a copy of the personal data we hold about you</li>
-              <li><strong className="text-white/80">Rectification</strong> — ask us to correct inaccurate or incomplete data</li>
-              <li><strong className="text-white/80">Erasure</strong> — request that we delete your personal data (&ldquo;right to be forgotten&rdquo;)</li>
-              <li><strong className="text-white/80">Restriction</strong> — ask us to limit how we use your data</li>
-              <li><strong className="text-white/80">Portability</strong> — receive your data in a structured, machine-readable format</li>
-              <li><strong className="text-white/80">Objection</strong> — object to our processing of your data based on legitimate interests</li>
-              <li><strong className="text-white/80">Withdraw consent</strong> — at any time, where processing is based on consent</li>
+              <li><strong className="text-white/80">Access</strong>  -  request a copy of the personal data we hold about you</li>
+              <li><strong className="text-white/80">Rectification</strong>  -  ask us to correct inaccurate or incomplete data</li>
+              <li><strong className="text-white/80">Erasure</strong>  -  request that we delete your personal data (&ldquo;right to be forgotten&rdquo;)</li>
+              <li><strong className="text-white/80">Restriction</strong>  -  ask us to limit how we use your data</li>
+              <li><strong className="text-white/80">Portability</strong>  -  receive your data in a structured, machine-readable format</li>
+              <li><strong className="text-white/80">Objection</strong>  -  object to our processing of your data based on legitimate interests</li>
+              <li><strong className="text-white/80">Withdraw consent</strong>  -  at any time, where processing is based on consent</li>
             </ul>
             <p className="mt-3">
               To exercise any of these rights, email us at{" "}

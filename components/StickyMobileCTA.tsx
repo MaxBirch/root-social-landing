@@ -7,7 +7,7 @@ export default function StickyMobileCTA() {
   const heroRef = useRef<Element | null>(null);
 
   useEffect(() => {
-    // Target the first <section> in <main> — that's the Hero
+    // Target the first <section> in <main>  -  that's the Hero
     heroRef.current = document.querySelector("main > section:first-child");
     if (!heroRef.current) return;
 
