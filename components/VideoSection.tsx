@@ -7,24 +7,30 @@ const caseStudies = [
     client: "Baby Brand",
     industry: "E-commerce",
     timeframe: "7 days",
-    stat: "35.87x ROAS",
-    statDetail: "$163K revenue from $4.5K spend",
+    primaryStat: "$163K",
+    primaryLabel: "Revenue in 7 Days",
+    secondaryStat: "$4.5K spend",
+    detail: "From a standing start - zero brand history on Meta",
     colour: "#2D8B3C",
   },
   {
     client: "Construction Tools Brand",
     industry: "B2C / DTC",
     timeframe: "30 days",
-    stat: "8x ROAS",
-    statDetail: "$1.7M revenue generated",
+    primaryStat: "$1.7M",
+    primaryLabel: "Revenue Generated",
+    secondaryStat: "8x ROAS",
+    detail: "Scaled from a stagnant account with no structure",
     colour: "#2D8B3C",
   },
   {
     client: "Trading Education Co.",
     industry: "Education / Finance",
     timeframe: "2 years",
-    stat: "103K leads",
-    statDetail: "Avg CPL of £9.85 vs £25 target",
+    primaryStat: "103K",
+    primaryLabel: "Qualified Leads",
+    secondaryStat: "60% below target CPL",
+    detail: "Avg CPL of £9.85 vs £25 target - sustained over 2 years",
     colour: "#2D8B3C",
   },
 ];
@@ -78,7 +84,7 @@ export default function VideoSection() {
             className="font-black text-white leading-tight tracking-tight"
             style={{ fontSize: "clamp(1.7rem, 4vw, 2.8rem)" }}
           >
-            Results we&apos;ve driven for brands like yours
+            Revenue we&apos;ve generated for brands like yours
           </h2>
           <p className="mt-3" style={{ color: "rgba(255,255,255,0.65)", fontSize: "1rem" }}>
             No projections. No templates. Real numbers from real accounts we manage.
@@ -116,18 +122,26 @@ export default function VideoSection() {
                 </span>
               </div>
 
-              {/* Big stat */}
+              {/* Primary stat - revenue/growth focused */}
               <div>
                 <div
-                  className="font-black leading-none mb-1"
-                  style={{ fontSize: "2.2rem", color: cs.colour }}
+                  className="font-black leading-none mb-0.5"
+                  style={{ fontSize: "2.6rem", color: cs.colour }}
                 >
-                  {cs.stat}
+                  {cs.primaryStat}
                 </div>
-                <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.82rem" }}>
-                  {cs.statDetail}
+                <p className="font-bold" style={{ color: "rgba(255,255,255,0.8)", fontSize: "0.9rem" }}>
+                  {cs.primaryLabel}
+                </p>
+                <p className="mt-1" style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.78rem" }}>
+                  {cs.secondaryStat}
                 </p>
               </div>
+
+              {/* Detail */}
+              <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.8rem", lineHeight: 1.5, fontStyle: "italic" }}>
+                &ldquo;{cs.detail}&rdquo;
+              </p>
 
               {/* Client */}
               <div
@@ -153,7 +167,7 @@ export default function VideoSection() {
           Client names anonymised for confidentiality
         </p>
 
-        {/* Video placeholder — ready when Max records */}
+        {/* Video placeholder */}
         <div
           className="mt-8 relative w-full overflow-hidden"
           style={{

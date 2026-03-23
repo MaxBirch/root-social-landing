@@ -4,27 +4,27 @@ import { useEffect, useRef } from "react";
 
 const rows = [
   {
-    rootSocial: "Dedicated media buyer with a capped client roster — your account gets real focus",
+    rootSocial: "Dedicated media buyer with a capped client roster - your account gets real focus",
     others: "Overworked buyers juggling 20+ accounts at once",
   },
   {
-    rootSocial: "Unlimited ad creatives included — no caps, no surprise invoices",
-    others: "Creative quota hit? Pay more or go without",
+    rootSocial: "Ad creative included as standard - strategy, design, copy, iteration",
+    others: "Creative is extra - pay per asset or go without",
   },
   {
-    rootSocial: "Rolling monthly contracts — we earn your business every single month",
-    others: "Locked in for 6–12 months regardless of results",
+    rootSocial: "Rolling monthly contracts - we earn your business every single month",
+    others: "Locked in for 6-12 months regardless of results",
   },
   {
-    rootSocial: "Live AI dashboard — see your results in real time, 24/7",
+    rootSocial: "Live AI dashboard - see your results in real time, 24/7",
     others: "Monthly PDF reports with cherry-picked metrics",
   },
   {
     rootSocial: "£20M+ in tracked revenue generated across client accounts",
-    others: "No verifiable track record — take their word for it",
+    others: "No verifiable track record - take their word for it",
   },
   {
-    rootSocial: "Same-day response, proactive optimisations — you never chase us",
+    rootSocial: "Same-day response, proactive optimisations - you never chase us",
     others: "Slow to respond when performance dips",
   },
 ];
@@ -35,7 +35,6 @@ export default function Comparison() {
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
-    // Immediately reveal if already in viewport
     const inner = el.querySelector(".comparison-inner");
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -47,7 +46,6 @@ export default function Comparison() {
       { threshold: 0, rootMargin: "100px" }
     );
     observer.observe(el);
-    // Fallback: reveal after short delay in case observer misses
     const fallback = setTimeout(() => inner?.classList.add("revealed"), 1200);
     return () => { observer.disconnect(); clearTimeout(fallback); };
   }, []);
@@ -177,7 +175,7 @@ export default function Comparison() {
         {/* Bottom CTA nudge */}
         <div className="text-center mt-10">
           <p style={{ color: "rgba(26,26,26,0.5)", fontSize: "0.9rem", marginBottom: "16px" }}>
-            Experience the difference first-hand — your audit is 100% free
+            Experience the difference first-hand - your audit is 100% free
           </p>
           <button
             onClick={() => {

@@ -80,7 +80,7 @@ export default function Testimonial() {
             className="font-black leading-tight"
             style={{ fontSize: "clamp(1.7rem, 4vw, 2.5rem)", color: "#1A1A1A" }}
           >
-            What our clients actually say
+            What Our Clients Say
           </h2>
           <p style={{ color: "rgba(26,26,26,0.5)", fontSize: "0.95rem", marginTop: "8px" }}>
             Real clients. Verified results. Not a single word fabricated.
@@ -196,53 +196,7 @@ export default function Testimonial() {
           ))}
         </div>
 
-        {/* Client logos row */}
-        <div className="mt-10 text-center">
-          <p
-            style={{
-              color: "rgba(26,26,26,0.55)",
-              fontSize: "0.72rem",
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: "0.08em",
-              marginBottom: "12px",
-            }}
-          >
-            Trusted by
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
-            <img 
-              src="/logos/hades-agency.png" 
-              alt="Hades Agency" 
-              className="h-8 opacity-60 hover:opacity-80 transition-opacity duration-200"
-            />
-            <img 
-              src="/logos/phantom-jewels.png" 
-              alt="Phantom Jewels" 
-              className="h-8 opacity-60 hover:opacity-80 transition-opacity duration-200"
-            />
-            <img 
-              src="/logos/spectra.png" 
-              alt="Spectra" 
-              className="h-8 opacity-60 hover:opacity-80 transition-opacity duration-200"
-            />
-            <img 
-              src="/logos/apex.png" 
-              alt="APEX" 
-              className="h-8 opacity-60 hover:opacity-80 transition-opacity duration-200"
-            />
-            <img 
-              src="/logos/body-boom.png" 
-              alt="Body Boom" 
-              className="h-8 opacity-60 hover:opacity-80 transition-opacity duration-200"
-            />
-            <img 
-              src="/logos/pumpables.png" 
-              alt="Pumpables" 
-              className="h-8 opacity-60 hover:opacity-80 transition-opacity duration-200"
-            />
-          </div>
-        </div>
+
       </div>
     </section>
   );

@@ -202,7 +202,7 @@ input, select, textarea {
 }
 
 /* ============================================================
-   TRUST PILL (legacy — kept for compatibility)
+   TRUST PILL (legacy - kept for compatibility)
    ============================================================ */
 .trust-pill {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -211,4 +211,36 @@ input, select, textarea {
 .trust-pill:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* ============================================================
+   LOGO CAROUSEL - infinite scroll animation
+   ============================================================ */
+@keyframes scroll-logos {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.carousel-track {
+  display: flex;
+  width: max-content;
+  animation: scroll-logos 28s linear infinite;
+}
+
+.carousel-track:hover {
+  animation-play-state: paused;
+}
+
+/* ============================================================
+   FAQ ACCORDION
+   ============================================================ */
+.faq-answer {
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.3s ease;
+  opacity: 0;
+  max-height: 0;
+}
+
+.faq-answer.open {
+  opacity: 1;
 }

@@ -205,7 +205,7 @@ export default function AuditForm() {
                 Claim your free ad account audit
               </h2>
               <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.95rem" }}>
-                Takes 2 minutes. We review your account <strong className="text-white/80">before</strong> we ever speak.
+                Takes 2 minutes to fill in. We&apos;ll review your account <strong className="text-white/80">before</strong> your free 30-minute audit call.
               </p>
 
               {/* Scarcity nudge */}
