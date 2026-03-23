@@ -224,63 +224,60 @@ export async function POST(request: NextRequest) {
       console.error("Discord notification error:", discordError);
     }
 
-    // Send confirmation email if Calendly booking confirmed
-    if (calendlyBooked) {
+    // Send confirmation email for qualified leads (with or without Calendly booking)
+    if (qualified) {
       try {
-        const webhookUrl = process.env.LANDING_WEBHOOK_URL;
-        if (webhookUrl) {
-          await fetch(webhookUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              type: "confirmation_email",
-              to: email,
-              subject: "Your FREE Root Social audit is confirmed",
-              body: [
-                `Hi ${firstName},`,
-                ``,
-                `Thank you for booking your FREE audit call with Root Social!`,
-                ``,
-                `We're looking forward to speaking with you. Before we meet, a quick reminder:`,
-                ``,
-                `🔑 Please make sure you've granted view-only access to your Meta ad account for rootsocialgeneral@gmail.com  -  this allows us to review your account before the call so we come prepared with specific recommendations.`,
-                ``,
-                `What to expect:`,
-                `• We'll review your ad account thoroughly before we speak`,
-                `• We'll come prepared with specific, actionable recommendations`,
-                `• You'll walk away knowing exactly what to change`,
-                ``,
-                `If you have any questions before the call, reply to this email.`,
-                ``,
-                `Looking forward to it,`,
-                `Max & the Root Social team`,
-              ].join("\n"),
-              ...leadData,
-              kvKey: key,
-            }),
-          });
-        }
+        const emailSubject = "Your FREE Root Social Audit - What Happens Next";
+        const bodyLines = calendlyBooked
+          ? [
+              `Hi ${firstName},`,
+              ``,
+              `Thank you for booking your FREE ad account audit with Root Social — we're looking forward to the call!`,
+              ``,
+              `🔑 One quick thing before we speak: please make sure you've granted view-only access to your Meta ad account for <strong>rootsocialgeneral@gmail.com</strong>. This lets us review your account thoroughly before we meet.`,
+              ``,
+              `What to expect:`,
+              `• We review your ad account in detail <em>before</em> the call — we don't go in blind`,
+              `• We come prepared with specific, actionable recommendations tailored to your account`,
+              `• You'll walk away knowing exactly what's costing you money and what to fix`,
+              ``,
+              `We typically need around <strong>3 days</strong> to prepare your audit properly, so if you've booked for soon, please add the ad account access as soon as possible.`,
+              ``,
+              `If you have any questions before the call, just reply to this email.`,
+              ``,
+              `Looking forward to it,`,
+              `Max &amp; the Root Social team`,
+            ]
+          : [
+              `Hi ${firstName},`,
+              ``,
+              `Thanks for submitting your details — we've received your request for a FREE ad account audit.`,
+              ``,
+              `🔑 To get started, please grant view-only access to your Meta ad account for <strong>rootsocialgeneral@gmail.com</strong>. This allows us to review your account before we speak so we can come with specific recommendations rather than generic advice.`,
+              ``,
+              `What happens next:`,
+              `• We'll review your ad account over the next <strong>3 days</strong>`,
+              `• We'll reach out to schedule a call at a time that works for you`,
+              `• You'll walk away with a clear picture of what's working, what isn't, and what to do about it`,
+              ``,
+              `If you have any questions in the meantime, just reply to this email.`,
+              ``,
+              `Speak soon,`,
+              `Max &amp; the Root Social team`,
+            ];
+
+        await fetch(`${request.nextUrl.origin}/api/send-email`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            to: email,
+            firstName,
+            subject: emailSubject,
+            bodyLines,
+          }),
+        });
       } catch (emailError) {
         console.error("Confirmation email error:", emailError);
-      }
-    }
-
-    // Send to webhook if configured (standard lead)
-    if (!calendlyBooked) {
-      try {
-        const webhookUrl = process.env.LANDING_WEBHOOK_URL;
-        if (webhookUrl) {
-          await fetch(webhookUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              ...leadData,
-              kvKey: key,
-            }),
-          });
-        }
-      } catch (webhookError) {
-        console.error("Webhook error:", webhookError);
       }
     }
 
