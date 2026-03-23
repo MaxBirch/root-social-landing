@@ -13,8 +13,8 @@ const logos = [
 ];
 
 export default function LogoCarousel() {
-  // Duplicate logos for seamless infinite loop
-  const allLogos = [...logos, ...logos];
+  // Triple logos for truly seamless infinite loop (no gap at reset point)
+  const allLogos = [...logos, ...logos, ...logos];
 
   return (
     <section

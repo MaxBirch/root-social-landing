@@ -218,13 +218,14 @@ input, select, textarea {
    ============================================================ */
 @keyframes scroll-logos {
   0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  100% { transform: translateX(-33.333%); }
 }
 
 .carousel-track {
   display: flex;
   width: max-content;
-  animation: scroll-logos 28s linear infinite;
+  animation: scroll-logos 30s linear infinite;
+  will-change: transform;
 }
 
 .carousel-track:hover {
