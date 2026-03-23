@@ -138,6 +138,50 @@ export async function POST(request: NextRequest) {
       console.error("KV storage error:", kvError);
     }
 
+    // Store in Notion database
+    try {
+      const notionKey = process.env.NOTION_API_KEY;
+      const notionDbId = process.env.NOTION_LEADS_DB_ID;
+
+      if (notionKey && notionDbId) {
+        const adSpendMap: Record<string, string> = {
+          "less-than-1k": "Less than 1k",
+          "1k-3k": "1k-3k",
+          "3k-10k": "3k-10k",
+          "10k-plus": "10k+",
+          "not-running": "Not running ads",
+        };
+
+        await fetch("https://api.notion.com/v1/pages", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${notionKey}`,
+            "Notion-Version": "2022-06-28",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            parent: { database_id: notionDbId },
+            properties: {
+              Name: { title: [{ text: { content: firstName || "" } }] },
+              Email: { email: email || null },
+              Website: { url: website && website.startsWith("http") ? website : website ? `https://${website}` : null },
+              "Ad Spend": adSpend ? { select: { name: adSpendMap[adSpend] || adSpend } } : undefined,
+              Challenge: { rich_text: [{ text: { content: challenge || "" } }] },
+              Qualified: { checkbox: Boolean(qualified) },
+              "Account Access Granted": { checkbox: Boolean(accessGranted) },
+              "Additional Notes": { rich_text: [{ text: { content: additionalNotes || "" } }] },
+              "Calendly Booked": { checkbox: Boolean(calendlyBooked) },
+              Source: { select: { name: "Landing Page" } },
+              Status: { select: { name: Boolean(qualified) ? (Boolean(calendlyBooked) ? "Audit Booked" : "New Lead") : "Disqualified" } },
+              "Submitted At": { date: { start: timestamp || new Date().toISOString() } },
+            },
+          }),
+        });
+      }
+    } catch (notionError) {
+      console.error("Notion storage error:", notionError);
+    }
+
     // Send Meta CAPI event if qualified lead
     if (qualified && !calendlyBooked) {
       try {
